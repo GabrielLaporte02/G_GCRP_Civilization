@@ -1,0 +1,7 @@
+63f7b34db8d8cdea90c76aacccf841ec
+::res://::1781748715
+Agente.gd::GDScript::4265400530440227485::1781747366::0::1::::Agente<>Resource<><>0<>0<><>::
+Gerenciador.gd::GDScript::3369018468284723198::1781747671::0::1::::Gerenciador<>Node<><>0<>0<><>::
+GridVisual.gd::GDScript::5863885936700633814::1781747669::0::1::::<>Control<><>0<>0<><>::
+Main.tscn::PackedScene::233408828321439::1781747671::0::1::::<><><>0<>0<><>::res://Gerenciador.gd<>res://UI.gd<>res://GridVisual.gd
+UI.gd::GDScript::456725933675165654::1781747510::0::1::::<>CanvasLayer<><>0<>0<><>::

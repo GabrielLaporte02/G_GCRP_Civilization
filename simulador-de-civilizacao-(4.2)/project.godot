@@ -1,0 +1,17 @@
+config_version=5
+
+[application]
+
+config/name="Simulador de Civilizacao (4.2)"
+run/main_scene="res://Main.tscn"
+config/features=PackedStringArray("4.2", "Forward Plus")
+config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=800
+window/size/viewport_height=600
+
+[rendering]
+
+renderer/rendering_method="forward_plus"
