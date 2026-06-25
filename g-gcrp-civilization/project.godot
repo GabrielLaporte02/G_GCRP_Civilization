@@ -12,11 +12,11 @@ config_version=5
 
 config/name="G_GCRP_Civilization"
 config/features=PackedStringArray("4.7", "Forward Plus")
-config/icon="res://icon.svg"
 
 [autoload]
 
 GameDataManager="*uid://brs5epinw76rs"
+EventBus="*uid://3hvgskreglk3"
 
 [physics]
 
