@@ -41,6 +41,7 @@ func _create_noise_layer(layer_seed: int) -> FastNoiseLite:
 	return noise
 
 func _determine_tile_type(x: int, y: int, t_stone: float, t_wood: float, t_food: float) -> GridTile.TileType:
+	
 	# Somamos 1 e dividimos por 2 para esmagar o valor entre 0.0 e 1.0, facilitando a matemática.
 	var val_stone = (_noise_stone.get_noise_2d(x, y) + 1.0) / 2.0
 	var val_wood = (_noise_wood.get_noise_2d(x, y) + 1.0) / 2.0
