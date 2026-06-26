@@ -57,3 +57,137 @@ Como o jogo foi construído na **Godot Engine**, siga estes passos para testar a
    - **Controles:**
      - Clique em **"Próximo Turno"** com o mouse para avançar a simulação passo a passo.
      - Pressione **'R'** no teclado para reinicializar todos os agentes imediatamente a qualquer momento.
+
+## 📁 Project Structure
+
+A estrutura do projeto está organizada em pastas separadas para o projeto Godot principal, a versão de teste e os arquivos de suporte do simulador:
+
+```text
+G_GCRP_CivilizationTest01/
+├── README.md
+├── g-gcrp-civilization/
+│   ├── project.godot
+│   ├── World.tscn
+│   ├── _dev/
+│   │   └── DevTileReference.tscn
+│   ├── assets/
+│   │   └── tiles/
+│   │       ├── main_tileset.tres
+│   │       └── imagens e imports de tiles
+│   └── core/
+│       ├── data/
+│       ├── events/
+│       └── world_generation/
+├── game/
+│   ├── Agente.gd
+│   ├── Gerenciador.gd
+│   ├── GridVisual.gd
+│   ├── UI.gd
+│   ├── Main.tscn
+│   ├── main.py
+│   └── project.godot
+├── simulador-de-civilizacao-(4.2)/
+│   ├── Agente.gd
+│   ├── Gerenciador.gd
+│   ├── GridVisual.gd
+│   ├── UI.gd
+│   ├── Main.tscn
+│   ├── main.py
+│   └── project.godot
+└── simulador-de-civilizacao-(4.6)/
+    ├── Agente.gd
+    ├── Gerenciador.gd
+    ├── GridVisual.gd
+    ├── UI.gd
+    ├── Main.tscn
+    ├── main.py
+    ├── project.godot
+    └── .gd and .uid support files
+```
+
+Esta seção serve apenas para documentar a organização atual dos arquivos e pastas, sem alterar a estrutura do projeto.
+
+## 🧭 Sumário do Projeto
+
+Abaixo está um resumo objetivo de cada pasta e arquivo principal, mostrando o que cada parte é responsável e como ela participa no funcionamento do projeto.
+
+### Pastas e arquivos principais
+
+- `README.md`
+  - Arquivo de documentação geral do projeto.
+  - Explica o objetivo do simulador, como executar e como a estrutura foi organizada.
+
+- `g-gcrp-civilization/`
+  - Pasta principal do projeto Godot com a versão mais organizada e modular do simulador.
+  - Contém os arquivos de configuração do projeto, cenas e scripts de lógica do mundo.
+
+- `g-gcrp-civilization/project.godot`
+  - Arquivo central do projeto Godot.
+  - Define a configuração principal do projeto e o ponto de entrada do engine.
+
+- `g-gcrp-civilization/World.tscn`
+  - Cena principal do mundo do simulador.
+  - Organiza os elementos visuais e os nós que compõem a cena do jogo.
+
+- `g-gcrp-civilization/_dev/`
+  - Pasta para arquivos auxiliares de desenvolvimento.
+  - Pode guardar referências, protótipos ou cenas de apoio usadas durante a criação.
+
+- `g-gcrp-civilization/assets/tiles/`
+  - Pasta de recursos visuais do projeto.
+  - Armazena os tiles, imagens e arquivos de configuração de aparência do mapa.
+
+- `g-gcrp-civilization/core/data/`
+  - Responsável por armazenar as estruturas de dados do simulador.
+  - Aqui ficam as definições das entidades, atributos e dados usados pelo jogo.
+
+- `g-gcrp-civilization/core/events/`
+  - Contém a lógica de comunicação entre módulos.
+  - Serve para transmitir eventos e ações entre diferentes partes do sistema.
+
+- `g-gcrp-civilization/core/world_generation/`
+  - Responsável por gerar o ambiente do mundo simulado.
+  - Controla a criação do mapa, configuração do cenário e renderização visual do mundo.
+
+- `game/`
+  - Pasta com uma versão do simulador em uma estrutura mais direta e simples.
+  - É uma implementação prática para execução e visualização da simulação.
+
+- `game/Agente.gd`
+  - Define o comportamento e os atributos básicos dos agentes.
+  - Representa a entidade que vive, se move e interage no mundo.
+
+- `game/Gerenciador.gd`
+  - É o núcleo da simulação.
+  - Controla o fluxo de turnos, decisões e regras do jogo.
+
+- `game/GridVisual.gd`
+  - Responsável pela parte visual do grid.
+  - Mostra o estado do ambiente e a posição dos agentes na tela.
+
+- `game/UI.gd`
+  - Gerencia a interface do usuário.
+  - Controla os elementos visuais e a interação com o jogador.
+
+- `game/Main.tscn`
+  - Cena principal da interface do projeto.
+  - Junta os componentes visuais e os scripts do simulador.
+
+- `game/main.py`
+  - Arquivo de apoio ou execução alternativa do simulador.
+  - Pode ser usado para testes, integração ou execução fora do ambiente Godot.
+
+- `simulador-de-civilizacao-(4.2)/`
+  - Pasta com uma versão antiga ou intermediária do projeto.
+  - Mantém uma implementação semelhante do simulador para referência ou comparação.
+
+- `simulador-de-civilizacao-(4.6)/`
+  - Pasta com uma versão mais recente ou experimental do projeto.
+  - Serve como outra implementação do simulador, com arquivos compatíveis com a estrutura atual.
+
+### Como as partes se conectam
+
+- Os arquivos `Agente.gd`, `Gerenciador.gd` e `UI.gd` trabalham juntos para formar a lógica principal do simulador.
+- O arquivo `Main.tscn` organiza a cena e conecta os scripts à interface.
+- A pasta `core` no projeto Godot separa melhor as responsabilidades, deixando o código mais modular.
+- As pastas `assets` e `_dev` ajudam na parte visual e no suporte durante o desenvolvimento.
