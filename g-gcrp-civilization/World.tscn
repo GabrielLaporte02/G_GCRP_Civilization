@@ -1,18 +1,17 @@
 [gd_scene format=3 uid="uid://bdyn150tiw4n6"]
 
-[ext_resource type="Script" uid="uid://brm260kxx74up" path="res://core/world_generation/world_renderer.gd" id="1_2dftf"]
 [ext_resource type="Script" uid="uid://da1xvhbb8m3nf" path="res://core/world_generation/world_generator.gd" id="1_bcbcq"]
-[ext_resource type="TileSet" uid="uid://bib6gw3swcki0" path="res://assets/tiles/main_tileset.tres" id="1_c6gwx"]
+[ext_resource type="PackedScene" uid="uid://doroey4t3vj1x" path="res://core/world_generation/WorldRenderer.tscn" id="2_2dftf"]
+[ext_resource type="Script" uid="uid://cp1dnqgkltly4" path="res://core/camera/camera_controller.gd" id="3_bcbcq"]
 
 [node name="World" type="Node2D" unique_id=1406795208]
 script = ExtResource("1_bcbcq")
 
-[node name="World_Grid" type="Node" parent="." unique_id=1895862339]
-script = ExtResource("1_2dftf")
+[node name="World_Grid" parent="." unique_id=1660403770 instance=ExtResource("2_2dftf")]
 
-[node name="Floor" type="TileMapLayer" parent="World_Grid" unique_id=274940573]
-tile_set = ExtResource("1_c6gwx")
+[node name="Camera2D" type="Camera2D" parent="." unique_id=848026110 node_paths=PackedStringArray("floor_layer", "objects_layer")]
+script = ExtResource("3_bcbcq")
+floor_layer = NodePath("../World_Grid/Floor")
+objects_layer = NodePath("../World_Grid/Objects")
 
-[node name="Objects" type="TileMapLayer" parent="World_Grid" unique_id=1254328696]
-y_sort_enabled = true
-tile_set = ExtResource("1_c6gwx")
+[editable path="World_Grid"]

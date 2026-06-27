@@ -35,13 +35,10 @@ func render_world() -> void:
 		for y in range(GameDataManager.GRID_HEIGHT):
 			var tile: GridTile = grid[x][y]
 			
-			# A coordenada onde o carimbo será batido, ela escala com o tamanho 10x10
 			var visual_pos = Vector2i(x * PATTERN_SIZE, y * PATTERN_SIZE)
 			
 			if FLOOR_PATTERN_IDS.has(tile.type):
-				# Escolhe um ID aleatório da lista correspondente
 				var floor_id = FLOOR_PATTERN_IDS[tile.type].pick_random()
-				# Pega o carimbo no TileSet do nó "floor"
 				var floor_pattern = layer_floor.tile_set.get_pattern(floor_id)
 				
 				if floor_pattern:
@@ -49,14 +46,11 @@ func render_world() -> void:
 					
 			if OBJECT_PATTERN_IDS.has(tile.type):
 				var obj_id = OBJECT_PATTERN_IDS[tile.type].pick_random()
-				# Pega o carimbo no TileSet do nó "objects"
 				var obj_pattern = layer_objects.tile_set.get_pattern(obj_id)
 				
 				if obj_pattern:
 					layer_objects.set_pattern(visual_pos, obj_pattern)
 					
-	print("Log: Mundo renderizado com sucesso. Camadas de Chão e Objetos aplicadas.")
-	
 func clean_grid() -> void:
 	layer_floor.clear()
 	layer_objects.clear()
