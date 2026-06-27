@@ -1,29 +1,38 @@
 extends Node2D
 class_name API_Communication
 
+# Sinal utilizado para conectar com funções que serão executadas quando a
+# resposta for recebia.
+signal response_received
+
+# - Variaveis da conversa com a IA:
+# Prompt inicial que da o contexto a IA e indica como ela deve se comportar.
 @export var system_prompt : String = ""
+# Numero de mensagens de requisição e resposta que serão guardadas na lista de
+# mensagens.
 @export var message_list_size : int = 2
+# Lista que guarda as mensagens enviadas e recebidas.
+var mensages_list = []
 
+# - Variaveis para comunicação:
 @onready var http = HTTPRequest.new()
-
 enum Request_Stages {CREATE, POLL}
+var current_request_stage : Request_Stages
+var get_request_url = ""
 
+# - Variaveis da API:
 var url = "https://api.replicate.com/v1/predictions"
 # Substitua pelo seu token de API
 var token = "Bote seu token aqui"
 # Bote o modelo que vocé deseja utilizar
 var model = "openai/gpt-4.1-mini"
-var current_request_stage : Request_Stages
-var get_request_url = ""
-
-var mensages_list = []
 
 
+# --- Funções do sistema  ------------------------------------------------------------------------ #
 func _ready():
 	configura_http()
 	init_message_list()
-
-
+# ------------------------------------------------------------------------------------------------ #
 # --- Funções de mensagens  ---------------------------------------------------------------------- #
 # Inicia lista de mensagens com o contexto do sistema.
 func init_message_list():
@@ -95,6 +104,7 @@ func _on_HTTPRequest_request_completed(_result, _response_code, _headers, body):
 			for t in json["output"]:
 				resposta += t
 			add_assistant_message(resposta)
+			response_received.emit()
 		elif json.has("status") and json["status"] is float and json["status"] == 401.0:
 			print("HTTP 401.0 - Unauthorized (Não Autorizado), indica que a solicitação feita ao \
 servidor falhou porque as credenciais de autenticação são inválidas, \
@@ -117,4 +127,18 @@ func _check_result(consulta_url):
 func configura_http():
 	add_child(http)
 	http.request_completed.connect(_on_HTTPRequest_request_completed)
+# ------------------------------------------------------------------------------------------------ #
+# --- Funções de uso ----------------------------------------------------------------------------- #
+# Usao texto recebido para fazer uma requisição para a IA.
+func send_request(text:String):
+	add_user_message(text)
+	_send_to_ai()
+
+# Retorna a resposta mais recente a IA.
+func get_response():
+	return get_recent_message()
+
+# Retorna a lista inteira de mensagens enviadas e recebidas que estão guardadas.
+func get_mensages_list():
+	return mensages_list
 # ------------------------------------------------------------------------------------------------ #
