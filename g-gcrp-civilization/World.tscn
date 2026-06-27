@@ -1,9 +1,11 @@
 [gd_scene format=3 uid="uid://bdyn150tiw4n6"]
 
 [ext_resource type="Script" uid="uid://brm260kxx74up" path="res://core/world_generation/world_renderer.gd" id="1_2dftf"]
+[ext_resource type="Script" uid="uid://da1xvhbb8m3nf" path="res://core/world_generation/world_generator.gd" id="1_bcbcq"]
 [ext_resource type="TileSet" uid="uid://bib6gw3swcki0" path="res://assets/tiles/main_tileset.tres" id="1_c6gwx"]
 
 [node name="World" type="Node2D" unique_id=1406795208]
+script = ExtResource("1_bcbcq")
 
 [node name="World_Grid" type="Node" parent="." unique_id=1895862339]
 script = ExtResource("1_2dftf")

@@ -32,6 +32,8 @@ func generate_world(stone_abundance: WorldConfig.AbundanceLevel,
 			column.append(GridTile.new(tile_type, amount))
 		new_grid.append(column)
 	GameDataManager.set_full_grid(new_grid)
+	
+	EventBus.world_generated.emit()
 
 func _create_noise_layer(layer_seed: int) -> FastNoiseLite:
 	var noise = FastNoiseLite.new()
