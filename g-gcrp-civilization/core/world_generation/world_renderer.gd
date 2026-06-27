@@ -17,6 +17,9 @@ const OBJECT_PATTERN_IDS: Dictionary = {
 	GridTile.TileType.EMPTY: [12, 13, 14, 15] 
 }
 
+@export var agents_container: Node2D
+@export var agent_scene: PackedScene
+
 @onready var layer_floor: TileMapLayer = $Floor
 @onready var layer_objects: TileMapLayer = $Objects
 
@@ -50,7 +53,76 @@ func render_world() -> void:
 				
 				if obj_pattern:
 					layer_objects.set_pattern(visual_pos, obj_pattern)
+	spawn_agents()
+	
+func spawn_agents() -> void:
+	var ai_agents = GameDataManager._ai_agents
+	var tile_size: int = 160
+	var half_tile: float = tile_size / 2.0
+	
+	# Chave: posicao em Vector2i | Valor: Array de referências de instâncias
+	var occupancy_map: Dictionary = {}
+	
+	# --- PASSO 1: Instanciação e Agrupamento ---
+	for agent_id in ai_agents:
+		var agent_data = ai_agents[agent_id]
+		var pos: Vector2i = agent_data.position
+		
+		# Instanciando agente
+		var agent_instance = agent_scene.instantiate()
+		agents_container.add_child(agent_instance)
+		agent_instance.setup(agent_id)
+			
+		# Calcula posição base (centro do tile)
+		var base_pixel_pos = Vector2(pos.x * tile_size + half_tile, pos.y * tile_size + half_tile)
+		
+		# Agrupa as instâncias pela coordenada do grid
+		if not occupancy_map.has(pos):
+			occupancy_map[pos] = []
+			
+		occupancy_map[pos].append({
+			"node": agent_instance,
+			"base_pos": base_pixel_pos
+		})
+
+	# --- PASSO 2: Organização Espacial (Offsets) ---
+	var offset_amount: float = 40
+	
+	for pos in occupancy_map:
+		var agents_in_tile: Array = occupancy_map[pos]
+		var count: int = agents_in_tile.size()
+		
+		# Itera sobre os agentes que dividem o mesmo tile para aplicar a cruz
+		for i in range(count):
+			var agent_info = agents_in_tile[i]
+			var node = agent_info["node"]
+			var final_pos: Vector2 = agent_info["base_pos"]
+			
+			if count == 2:
+				match i:
+					0: final_pos.x -= offset_amount # Esquerda
+					1: final_pos.x += offset_amount # Direita
+			
+			elif count == 3:
+				match i:
+					0: final_pos.x -= offset_amount # Esquerda
+					1: final_pos.x += offset_amount # Direita
+					2: final_pos.y -= offset_amount # Cima
 					
+			elif count >= 4:
+				match i:
+					0: final_pos.x -= offset_amount # Esquerda
+					1: final_pos.x += offset_amount # Direita
+					2: final_pos.y -= offset_amount # Cima
+					3: final_pos.y += offset_amount # Baixo
+			
+			# Caso seja count == 1, ele apenas pula os if/elif e mantém a base_pos (centro)
+			node.position = final_pos
+	
+
 func clean_grid() -> void:
 	layer_floor.clear()
 	layer_objects.clear()
+	
+	for child in agents_container.get_children():
+		child.queue_free()

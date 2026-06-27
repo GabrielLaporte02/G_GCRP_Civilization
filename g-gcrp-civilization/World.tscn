@@ -7,7 +7,12 @@
 [node name="World" type="Node2D" unique_id=1406795208]
 script = ExtResource("1_bcbcq")
 
-[node name="World_Grid" parent="." unique_id=1660403770 instance=ExtResource("2_2dftf")]
+[node name="World_Grid" parent="." unique_id=1660403770 node_paths=PackedStringArray("agents_container") instance=ExtResource("2_2dftf")]
+agents_container = NodePath("../Agents")
+
+[node name="Agents" type="Node2D" parent="." unique_id=1929476143]
+z_index = 1
+z_as_relative = false
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=848026110 node_paths=PackedStringArray("floor_layer", "objects_layer")]
 script = ExtResource("3_bcbcq")

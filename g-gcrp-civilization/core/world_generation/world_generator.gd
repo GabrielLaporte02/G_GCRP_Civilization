@@ -5,9 +5,14 @@ var _noise_stone: FastNoiseLite
 var _noise_wood: FastNoiseLite
 var _noise_food: FastNoiseLite
 
+#func _ready() -> void:
+	#generate_world(WorldConfig.AbundanceLevel.SCARCE,WorldConfig.AbundanceLevel.ABUNDANT, WorldConfig.AbundanceLevel.NORMAL,
+	#{"Agente1": AgentData.AgentType.AGGRESSIVE, "Agente2": AgentData.AgentType.AGGRESSIVE})
+
 func generate_world(stone_abundance: WorldConfig.AbundanceLevel, 
 					wood_abundance: WorldConfig.AbundanceLevel, 
-					food_abundance: WorldConfig.AbundanceLevel) -> void:
+					food_abundance: WorldConfig.AbundanceLevel,
+					agents_config: Dictionary) -> void:
 	var t_stone: float = WorldConfig.ABUNDANCE_THRESHOLDS[stone_abundance]
 	var t_wood: float  = WorldConfig.ABUNDANCE_THRESHOLDS[wood_abundance]
 	var t_food: float  = WorldConfig.ABUNDANCE_THRESHOLDS[food_abundance]
@@ -18,6 +23,7 @@ func generate_world(stone_abundance: WorldConfig.AbundanceLevel,
 	_noise_wood = _create_noise_layer(randi())
 	_noise_food = _create_noise_layer(randi())
 	
+	# Criando Grid
 	var new_grid: Array = [] 
 	for x in range(GameDataManager.GRID_WIDTH):
 		var column: Array = []
@@ -32,6 +38,14 @@ func generate_world(stone_abundance: WorldConfig.AbundanceLevel,
 			column.append(GridTile.new(tile_type, amount))
 		new_grid.append(column)
 	GameDataManager.set_full_grid(new_grid)
+	
+	# Criando Agentes
+	GameDataManager.clear_agents()
+	for agent_id in agents_config:
+		var personality = agents_config[agent_id]
+		var random_pos = Vector2i(randi() % GameDataManager.GRID_WIDTH, randi() % GameDataManager.GRID_HEIGHT)
+
+		GameDataManager.register_agent(agent_id, random_pos, personality)
 	
 	EventBus.world_generated.emit()
 

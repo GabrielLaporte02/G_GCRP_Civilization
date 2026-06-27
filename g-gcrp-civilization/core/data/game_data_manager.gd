@@ -29,7 +29,7 @@ func _grid_printt() -> void:
 		printt.callv(linha_atual)
 
 # --- AI AGENTS ---
-func register_agent(agent_id: String, start_position: Vector2i) -> bool:
+func register_agent(agent_id: String, start_position: Vector2i, personality: AgentData.AgentType) -> bool:
 	if start_position.x < 0 or start_position.x >= GRID_WIDTH or start_position.y < 0 or start_position.y >= GRID_HEIGHT:
 		push_error("Error: Agent insertion out of bounds at ", start_position)
 		return false
@@ -37,9 +37,10 @@ func register_agent(agent_id: String, start_position: Vector2i) -> bool:
 	if _ai_agents.has(agent_id):
 		push_warning("Warning: Agent ID already exists - " + agent_id)
 		return false
-		
-	_ai_agents[agent_id] = AgentData.new(start_position)
-	print("Log: Agent [", agent_id, "] registered at ", start_position)
+	
+	var new_agent = AgentData.new(agent_id, personality, start_position)
+	
+	_ai_agents[agent_id] = new_agent
 	return true
 
 func get_agent_position(agent_id: String) -> Vector2i:
@@ -48,7 +49,7 @@ func get_agent_position(agent_id: String) -> Vector2i:
 	push_error("Error: Agent not found - " + agent_id)
 	return Vector2i(-1, -1)
 
-func get_agent_vision(agent_id: String, radius: int) -> Array[Dictionary]:
+func get_agent_vision(agent_id: String) -> Array[Dictionary]:
 	var vision_data: Array[Dictionary] = []
 	
 	if not _ai_agents.has(agent_id):
@@ -56,6 +57,7 @@ func get_agent_vision(agent_id: String, radius: int) -> Array[Dictionary]:
 		return vision_data
 		
 	var ai_pos: Vector2i = _ai_agents[agent_id].position
+	var radius: int = _ai_agents[agent_id].vision_range
 	
 	#obs: O limite superior do for é exclusivo, logo devemos colocar +1
 	for x in range(ai_pos.x - radius, ai_pos.x + radius + 1):
@@ -67,6 +69,38 @@ func get_agent_vision(agent_id: String, radius: int) -> Array[Dictionary]:
 				})
 				
 	return vision_data
+
+func update_agent_stat(agent_id: String, stat_name: String, value: int) -> void:
+	if not _ai_agents.has(agent_id): 
+		return
+	
+	var agent = _ai_agents[agent_id]
+	match stat_name:
+		"health": agent.health += value
+		"combat_power": agent.combat_power += value
+		"vision_range": agent.vision_range += value
+
+func update_agent_position(agent_id: String, new_pos: Vector2i) -> bool:
+	if not _ai_agents.has(agent_id): 
+		return false
+	if new_pos.x < 0 or new_pos.x >= GRID_WIDTH or new_pos.y < 0 or new_pos.y >= GRID_HEIGHT:
+		return false
+		
+	_ai_agents[agent_id].position = new_pos
+	return true
+
+# Atualiza itens do inventário (melhorar depois caso seja possível, para evitar erros de digitacao)
+func update_agent_resource(agent_id: String, resource_name: String, amount: int) -> void:
+	if not _ai_agents.has(agent_id): return
+	
+	var agent = _ai_agents[agent_id]
+	if agent.inventory.has(resource_name):
+		agent.inventory[resource_name] += amount
+	else:
+		push_warning("Log: Agent [", agent_id, "] inventory doesnt have [", resource_name, "]")
+
+func clear_agents() -> void:
+	_ai_agents.clear()
 
 # --- GRID/TILES ---
 func get_tile(x: int, y: int) -> GridTile:

@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://1858780cjngu"]
+
+[ext_resource type="Script" uid="uid://b5b7l30hsedlw" path="res://agent_controller.gd" id="1_3ekns"]
+[ext_resource type="Texture2D" uid="uid://bcevhn4s4rfuj" path="res://assets/icons/Cat Outline 256px.png" id="2_gkwx1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3ekns"]
+
+[node name="AgentTemplate" type="Node2D" unique_id=1886240079]
+script = ExtResource("1_3ekns")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1506581242]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=918919799]
+position = Vector2(0, -4)
+shape = SubResource("RectangleShape2D_3ekns")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=2043215163]
+texture = ExtResource("2_gkwx1")
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
