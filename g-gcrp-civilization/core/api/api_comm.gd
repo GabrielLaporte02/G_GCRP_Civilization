@@ -6,13 +6,14 @@ class_name API_Communication
 signal response_received
 
 # - Variaveis da conversa com a IA:
-# Prompt inicial que da o contexto a IA e indica como ela deve se comportar.
-@export var system_prompt : String = ""
 # Numero de mensagens de requisição e resposta que serão guardadas na lista de
 # mensagens.
 @export var message_list_size : int = 2
 # Lista que guarda as mensagens enviadas e recebidas.
 var mensages_list = []
+# Prompt inicial que da o contexto a IA e indica como ela deve se comportar.
+var system_prompt : String
+
 
 # - Variaveis para comunicação:
 @onready var http = HTTPRequest.new()
@@ -31,9 +32,14 @@ var model = "openai/gpt-4.1-mini"
 # --- Funções do sistema  ------------------------------------------------------------------------ #
 func _ready():
 	configura_http()
+	create_system_prompt()
 	init_message_list()
 # ------------------------------------------------------------------------------------------------ #
 # --- Funções de mensagens  ---------------------------------------------------------------------- #
+# Cria o prompt inicial que da o contexto a IA e indica como ela deve se comportar.
+func create_system_prompt():
+	system_prompt = ""
+
 # Inicia lista de mensagens com o contexto do sistema.
 func init_message_list():
 	mensages_list = [{"role": "system", "content": system_prompt}]
