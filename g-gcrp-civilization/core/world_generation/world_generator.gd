@@ -5,7 +5,8 @@ var _noise_stone: FastNoiseLite
 var _noise_wood: FastNoiseLite
 var _noise_food: FastNoiseLite
 
-#func _ready() -> void:
+func _ready() -> void:
+	EventBus.world_gen_requested.connect(generate_world)
 	#generate_world(WorldConfig.AbundanceLevel.SCARCE,WorldConfig.AbundanceLevel.ABUNDANT, WorldConfig.AbundanceLevel.NORMAL,
 	#{"Agente1": AgentData.AgentType.AGGRESSIVE, "Agente2": AgentData.AgentType.AGGRESSIVE})
 

@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://c1o2wkfhn5f2g"]
+
+[ext_resource type="Script" uid="uid://dqqkuep76jdbt" path="res://core/ui/agent_row_ui_controller.gd" id="1_oj0tp"]
+
+[node name="AgentRowUi" type="HBoxContainer" unique_id=1471656773]
+theme_override_constants/separation = 10
+script = ExtResource("1_oj0tp")
+
+[node name="AgentName" type="LineEdit" parent="." unique_id=511353539]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="OptionType" type="OptionButton" parent="." unique_id=1030435049]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.5
+
+[node name="BtnRemove" type="Button" parent="." unique_id=1405674324]
+layout_mode = 2
+size_flags_stretch_ratio = 0.5
+text = " - "

@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://bkip0onxlu3kl"]
+
+[ext_resource type="Script" uid="uid://da1xvhbb8m3nf" path="res://core/world_generation/world_generator.gd" id="1_tqqwh"]
+[ext_resource type="PackedScene" uid="uid://doroey4t3vj1x" path="res://core/world_generation/WorldRenderer.tscn" id="2_8kf61"]
+[ext_resource type="Script" uid="uid://cp1dnqgkltly4" path="res://core/camera/camera_controller.gd" id="3_8r07o"]
+[ext_resource type="Script" uid="uid://db0hvihac0rts" path="res://core/ui/setup_controller.gd" id="4_m66t4"]
+[ext_resource type="Script" uid="uid://dykmyb0wvpehr" path="res://core/ui/click_blocker.gd" id="5_8kf61"]
+[ext_resource type="PackedScene" uid="uid://btrkygu2hh07a" path="res://core/ui/WorldConfig.tscn" id="5_38mba"]
+[ext_resource type="PackedScene" uid="uid://mt0wajrfukcb" path="res://core/ui/RerollHud.tscn" id="6_6ntqm"]
+[ext_resource type="PackedScene" uid="uid://dsrtbfxbjhsoj" path="res://core/ui/AgentConfigWindow.tscn" id="7_tqqwh"]
+
+[node name="SetupScreen" type="Node" unique_id=293830041]
+
+[node name="World Generator" type="Node" parent="." unique_id=1009217503]
+script = ExtResource("1_tqqwh")
+
+[node name="World_Grid" parent="." unique_id=1660403770 node_paths=PackedStringArray("agents_container") instance=ExtResource("2_8kf61")]
+agents_container = NodePath("../Agents")
+
+[node name="Agents" type="Node2D" parent="." unique_id=496622084]
+z_index = 1
+z_as_relative = false
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=597049473 node_paths=PackedStringArray("floor_layer", "objects_layer")]
+script = ExtResource("3_8r07o")
+floor_layer = NodePath("../World_Grid/Floor")
+objects_layer = NodePath("../World_Grid/Objects")
+
+[node name="SetupController" type="CanvasLayer" parent="." unique_id=737571629]
+script = ExtResource("4_m66t4")
+
+[node name="Background" type="ColorRect" parent="SetupController" unique_id=135709815]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.4)
+script = ExtResource("5_8kf61")
+
+[node name="WorldConfig" parent="SetupController" unique_id=2110549949 instance=ExtResource("5_38mba")]
+
+[node name="RerollHUD" parent="SetupController" unique_id=1225003825 instance=ExtResource("6_6ntqm")]
+
+[node name="AgentConfigWindow" parent="SetupController" unique_id=906682848 instance=ExtResource("7_tqqwh")]
+offset_left = -126.0
+offset_top = -150.0
+offset_right = 126.0
+offset_bottom = 150.0
+
+[editable path="World_Grid"]
+[editable path="SetupController/WorldConfig"]

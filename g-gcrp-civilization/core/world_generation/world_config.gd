@@ -1,10 +1,19 @@
 class_name WorldConfig
 
 enum AbundanceLevel {
-	SCARCE,
+	ABUNDANT,
 	NORMAL,
-	ABUNDANT
+	SCARCE
 }
+
+# Dicionário de tradução para a UI
+const ABUNDANCE_NAMES: Dictionary = {
+	AbundanceLevel.ABUNDANT: "Abundante",
+	AbundanceLevel.NORMAL: "Normal",
+	AbundanceLevel.SCARCE: "Escasso"
+}
+
+const TURN_OPTIONS : Array[int] = [10, 15, 20]
 
 const ABUNDANCE_THRESHOLDS: Dictionary = {
 	AbundanceLevel.SCARCE: 0.75,
