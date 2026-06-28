@@ -24,7 +24,7 @@ var get_request_url = ""
 # - Variaveis da API:
 var url = "https://api.replicate.com/v1/predictions"
 # Substitua pelo seu token de API
-var token = "Bote seu token aqui"
+var token = "r8_9KRYViL5VCGUOrMLmJsjXErgoexfxLw3Xy79b"
 # Bote o modelo que vocé deseja utilizar
 var model = "openai/gpt-4.1-mini"
 
