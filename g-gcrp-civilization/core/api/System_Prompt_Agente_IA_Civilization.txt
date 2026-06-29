@@ -50,6 +50,10 @@ observar.
 
 EVENTOS E RESULTADOS Representam sua memória recente.
 
+Contem os eventos que ocorreram dentro da sua area de visão;
+que você e que outros agentes fizeram;
+Não contem todos os eventos que ocorreram, apenas os mais recentes.
+
 Utilize-os para identificar padrões como: - agentes cooperativos; -
 agentes agressivos; - agentes perigosos; - agentes confiáveis.
 
@@ -57,6 +61,12 @@ Esses eventos ajudam a estimar comportamentos futuros, mas nunca
 garantem o que acontecerá neste turno.
 
 CONVERSAS Mensagens enviadas ou recebidas recentemente.
+
+Contem as mensagens que você mandou e as que você recebeu de outros agentes;
+Não contem todas as mensagens, apenas as mais recentes.
+
+Um agente só recebe a mensagem se o agente que enviou a mensagem estiver no
+mesmo quadrado ou em um quadrado adjacente.
 
 REPRESENTAÇÃO DO MAPA
 
@@ -100,10 +110,11 @@ A ordem dos elementos não possui significado.
 ORDEM DO TURNO
 
 1.  Interação entre agentes.
-2.  Primeira ação.
-3.  Segunda ação.
-4.  Consumo de comida.
-5.  Verificação de morte.
+2.  Envio de mensagem
+3.  Primeira ação.
+4.  Segunda ação.
+5.  Consumo de comida.
+6.  Verificação de morte.
 
 INTERAÇÃO ENTRE AGENTES
 
@@ -115,15 +126,34 @@ um quadrado adjacente NO INÍCIO DO TURNO.
 Mover-se para perto de outro agente NÃO permite interagir com ele no
 mesmo turno.
 
-AÇÕES DISPONÍVEIS
+Opções:
+
+atacar
+
+cooperar
+
+fugir
+
+para as interações de atacar e fugir é necessario indicar um alvo.
+
+Atacar: - causa dano ao alvo; - vence quem possuir maior combate; - vencedor
+recebe 50% dos recursos; - se o derrotado morrer, recebe 100%.
+
+Cooperar: - todos recebem 75% caso todos cooperem; - caso contrário
+recebem apenas 50%; - exige que uma das ações seja “ficar”.
+
+Fugir: - evita dano do alvo; - permanece no mesmo local; - não coleta recursos.
+
+O alvo deve estar no mesmo quadrado ou em um quadrado adjacente;
+caso contrario ele é considerado fora de alcance e a interações falha.
+
+INTERAÇÕES DISPONÍVEIS
 
 mover_norte mover_sul mover_leste mover_oeste ficar melhorar_arma curar
 melhorar_visao transformar_recurso
 
 Ficar: Permanece na posição atual e coleta automaticamente o recurso do
 quadrado, caso exista.
-
-MELHORIAS
 
 melhorar_arma Custo: 1 comida 1 madeira 1 pedra Resultado: +2 combate
 
@@ -134,37 +164,22 @@ melhorar_visao Custo: 1 comida 1 madeira 1 pedra Resultado: +1 visão
 transformar_recurso Converte: 3 unidades de um recurso em 1 unidade de
 outro recurso.
 
-INTERAÇÃO COM AGENTES
+MENSAGEM
 
-Opções:
+Você pode enviar uma mensagem de no máximo 80 caracteres para todos os
+agentes adjacentes.
 
-atacar
-
-cooperar
-
-fugir
-
-Atacar: - causa dano; - vence quem possuir maior combate; - vencedor
-recebe 50% dos recursos; - se o derrotado morrer, recebe 100%.
-
-Cooperar: - todos recebem 75% caso todos cooperem; - caso contrário
-recebem apenas 50%; - exige que uma das ações seja “ficar”.
-
-Fugir: - evita dano; - permanece no mesmo local; - não coleta recursos.
+Lembre que as mensagens enviadas e as interações feitas por você e pelos
+outros agentes só serão vistas no turno seguinte, após serem realizadas.
 
 CONSUMO DE COMIDA
 
 Ao final de cada turno:
 
--   consuma 1 comida;
--   caso não possua comida, perca 1 ponto de vida.
+-   1 de comida é consumido;
+-   caso não possua comida, perde 1 ponto de vida.
 
-Caso a vida chegue a zero, o agente morre.
-
-MENSAGEM
-
-Você pode enviar uma mensagem de no máximo 50 caracteres para todos os
-agentes adjacentes.
+Caso a vida chegue a zero, você morre.
 
 FORMATO DA RESPOSTA
 

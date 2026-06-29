@@ -1,5 +1,5 @@
-class_name AgentData
 extends Resource
+class_name AgentData
 
 enum AgentType {
 	AGGRESSIVE,
@@ -45,6 +45,9 @@ var combat_power: int
 var vision_range: int
 var inventory: Dictionary
 
+var seen_actions = []
+var seen_messages = []
+
 func _init(_agent_name: String = "", _personality: AgentType = AgentType.COOPERATIVE,
 			_position: Vector2i = Vector2i.ZERO) -> void:
 	
@@ -58,3 +61,21 @@ func _init(_agent_name: String = "", _personality: AgentType = AgentType.COOPERA
 	inventory["food"] = 2
 	inventory["wood"] = 0
 	inventory["stone"] = 0
+
+# Adiciona o indice do event_log (em GameDataManager) da ação vista pelo agente
+# na lista de ações vistas.
+func add_seen_actions(action_index:int):
+	seen_actions.append(action_index)
+
+# Adiciona o indice do event_log (em GameDataManager) da mensagens vista pelo
+# agente na lista de ações vistas.
+func add_seen_messages(message_index:int):
+	seen_messages.append(message_index)
+
+# Retorna lista de indices de ações vistas pelo agente.
+func get_seen_actions():
+	return seen_actions
+
+# Retorna lista de indices de mensagens vistas pelo agente.
+func get_seen_messages():
+	return seen_messages
