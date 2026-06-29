@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://1858780cjngu"]
 
 [ext_resource type="Script" uid="uid://b5b7l30hsedlw" path="res://core/agents/agent_controller.gd" id="1_3ekns"]
-[ext_resource type="Texture2D" uid="uid://bcevhn4s4rfuj" path="res://assets/icons/Cat Outline 256px.png" id="2_gkwx1"]
+[ext_resource type="Texture2D" uid="uid://bcevhn4s4rfuj" path="res://assets/icons/meow.png" id="2_gkwx1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3ekns"]
 

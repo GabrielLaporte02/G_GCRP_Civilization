@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bcevhn4s4rfuj"
-path="res://.godot/imported/Cat Outline 256px.png-e9d4d175ad785d9f318d95fc9a0dfb87.ctex"
+uid="uid://51q4f2c2r3qv"
+path="res://.godot/imported/parallax_1.png-7c1823a716eb0e47ca5ee50064349d01.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/Cat Outline 256px.png"
-dest_files=["res://.godot/imported/Cat Outline 256px.png-e9d4d175ad785d9f318d95fc9a0dfb87.ctex"]
+source_file="res://assets/parallax_background/main_menu/parallax_1.png"
+dest_files=["res://.godot/imported/parallax_1.png-7c1823a716eb0e47ca5ee50064349d01.ctex"]
 
 [params]
 
