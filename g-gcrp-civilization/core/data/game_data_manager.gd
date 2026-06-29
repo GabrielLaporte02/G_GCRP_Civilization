@@ -12,28 +12,11 @@ var event_log: Dictionary[String, Array] = {"Messages": [], "Actions": []}
 var action_remember_amout : int = 30
 var message_remember_amout : int = 30
 
+# --- Funções do sistema  ------------------------------------------------------------------------ #
 func _ready() -> void:
 	_initialize_empty_grid()
-
-func _initialize_empty_grid() -> void:
-	_grid.clear()
-	
-	# Criando array bidimensional
-	for x in range(GRID_WIDTH):
-		var column: Array = []
-		for y in range(GRID_HEIGHT):
-			column.append(GridTile.new())
-		_grid.append(column)
-
-func _grid_printt() -> void:
-	for y in range(GRID_HEIGHT):
-		var linha_atual: Array = []
-		
-		for x in range(GRID_WIDTH):
-			linha_atual.append(_grid[x][y].type)
-		printt.callv(linha_atual)
-
-# --- AI AGENTS ---
+# ------------------------------------------------------------------------------------------------ #
+# --- AI Agents ---------------------------------------------------------------------------------- #
 func register_agent(agent_id: String, start_position: Vector2i, personality: AgentData.AgentType) -> bool:
 	if start_position.x < 0 or start_position.x >= GRID_WIDTH or start_position.y < 0 or start_position.y >= GRID_HEIGHT:
 		push_error("Error: Agent insertion out of bounds at ", start_position)
@@ -161,6 +144,24 @@ func clear_agents() -> void:
 	_ai_agents.clear()
 # ------------------------------------------------------------------------------------------------ #
 # --- Grid/Tiles --------------------------------------------------------------------------------- #
+func _initialize_empty_grid() -> void:
+	_grid.clear()
+	
+	# Criando array bidimensional
+	for x in range(GRID_WIDTH):
+		var column: Array = []
+		for y in range(GRID_HEIGHT):
+			column.append(GridTile.new())
+		_grid.append(column)
+
+func _grid_printt() -> void:
+	for y in range(GRID_HEIGHT):
+		var linha_atual: Array = []
+		
+		for x in range(GRID_WIDTH):
+			linha_atual.append(_grid[x][y].type)
+		printt.callv(linha_atual)
+
 func get_tile(x: int, y: int) -> GridTile:
 	if x >= 0 and x < GRID_WIDTH and y >= 0 and y < GRID_HEIGHT:
 		return _grid[x][y]
@@ -190,30 +191,6 @@ func _get_agents_at_position(position: Vector2i) -> Array:
 		if agent.position == position:
 			result.append(agent.agent_name)
 	return result
-
-# 
-'''func _tile_to_string(tile: GridTile) -> String:
-	var parts = []
-	if tile.food:
-		parts.append("F")
-	if tile.wood:
-		parts.append("W")
-	if tile.stone:
-		parts.append("S")
-	if parts.is_empty():
-		parts.append(".")
-	for agent in _get_agents_at_position(tile.position):
-		parts.append("A(%s)" % agent.name)
-	return " ".join(parts)
-
-func get_full_map() -> Array:
-	var map = []
-	for y in GRID_HEIGHT:
-		var row = []
-		for x in GRID_WIDTH:
-			row.append(_tile_to_string(get_tile(x, y)))
-		map.append(row)
-	return map'''
 # ------------------------------------------------------------------------------------------------ #
 # --- Turn --------------------------------------------------------------------------------------- #
 func get_current_turn() -> int:

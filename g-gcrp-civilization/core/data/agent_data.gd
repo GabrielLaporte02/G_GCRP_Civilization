@@ -51,6 +51,8 @@ var seen_messages = []
 var known_map : Array[Array]
 var seen_map : Array[Array]
 
+
+# --- Funções do sistema  ------------------------------------------------------------------------ #
 func _init(_agent_name: String = "", _personality: AgentType = AgentType.COOPERATIVE,
 			_position: Vector2i = Vector2i.ZERO) -> void:
 	
@@ -65,7 +67,8 @@ func _init(_agent_name: String = "", _personality: AgentType = AgentType.COOPERA
 	inventory["wood"] = 0
 	inventory["stone"] = 0
 	initialize_known_map(GameDataManager.GRID_WIDTH, GameDataManager.GRID_HEIGHT)
-
+# ------------------------------------------------------------------------------------------------ #
+# --- Maps --------------------------------------------------------------------------------------- #
 # Inicializa o mapa que guarda as informações do que o agente já viu.
 func initialize_known_map(width: int, height: int):
 	known_map.clear()
@@ -87,7 +90,6 @@ func update_known_map():
 # Retorna o mapa que o agente conhece em fortato de texto.
 func get_known_map():
 	return known_map
-
 
 # Atualiza a parte do mapa que o agente consegue ver.
 func update_seen_map(vision_data: Array[Dictionary]):
@@ -138,7 +140,8 @@ func map_to_string(map: Array) -> String:
 			if tile != null:
 				text += tile.as_string() + "\n"
 	return text
-
+# ------------------------------------------------------------------------------------------------ #
+# --- Seen Actions/Messages ---------------------------------------------------------------------- #
 # Adiciona o indice do event_log (em GameDataManager) da ação vista pelo agente
 # na lista de ações vistas.
 func add_seen_actions(action_index:int):
@@ -156,3 +159,4 @@ func get_seen_actions():
 # Retorna lista de indices de mensagens vistas pelo agente.
 func get_seen_messages():
 	return seen_messages
+# ------------------------------------------------------------------------------------------------ #

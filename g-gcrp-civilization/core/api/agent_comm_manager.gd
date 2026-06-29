@@ -3,7 +3,6 @@ class_name Agent_Comm_Manager
 
 @export var game_data_manager : Game_Data_Manager
 
-
 # --- Funções de mensagens  ---------------------------------------------------------------------- #
 # Cria o prompt inicial que da o contexto a IA e indica como ela deve se comportar.
 func create_system_prompt():
@@ -72,10 +71,6 @@ Responda SOMENTE com o JSON especificado no System Prompt.
 	return prompt
 # ------------------------------------------------------------------------------------------------ #
 # --- Funções de obter dados do agente  ---------------------------------------------------------- #
-# ============================================================
-# PLACEHOLDERS
-# ============================================================
-
 static func get_status(agent_id:String) -> String:
 	return GameDataManager.get_agent_full_status(agent_id)
 
