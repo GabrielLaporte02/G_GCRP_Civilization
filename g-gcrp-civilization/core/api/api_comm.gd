@@ -5,6 +5,7 @@ class_name API_Communication
 # resposta for recebia.
 signal response_received
 
+
 # - Variaveis da conversa com a IA:
 # Numero de mensagens de requisição e resposta que serão guardadas na lista de
 # mensagens.

@@ -1,6 +1,13 @@
 extends API_Communication
 class_name Agent_Comm_Manager
 
+
+# --- Funções do sistema  ------------------------------------------------------------------------ #
+func _ready():
+	configura_http()
+	create_system_prompt()
+	init_message_list()
+# ------------------------------------------------------------------------------------------------ #
 # --- Funções de mensagens  ---------------------------------------------------------------------- #
 # Cria o prompt inicial que da o contexto a IA e indica como ela deve se comportar.
 func create_system_prompt():
@@ -67,8 +74,8 @@ escolha também uma interação e indique o alvo.
 Responda SOMENTE com o JSON especificado no System Prompt.
 """
 	return prompt
-
-
+# ------------------------------------------------------------------------------------------------ #
+# --- Funções de obter dados do agente  ---------------------------------------------------------- #
 # ============================================================
 # PLACEHOLDERS
 # ============================================================
@@ -95,3 +102,8 @@ static func get_recent_events() -> String:
 
 static func get_recent_messages() -> String:
 	return "[CONVERSAS]"
+# ------------------------------------------------------------------------------------------------ #
+# --- Funções de comunicação com IA  ------------------------------------------------------------- #
+func send_message():
+	send_request(create_message_to_agent())
+# ------------------------------------------------------------------------------------------------ #
