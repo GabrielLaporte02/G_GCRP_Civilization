@@ -6,6 +6,36 @@ enum AgentType {
 	COOPERATIVE
 }
 
+enum InteracActions{
+	ATTACK,
+	COOPERATE,
+	FLEE
+}
+
+enum WorldActions{
+	MOVEGATHER,
+	UPGRADE_WEAPON,
+	HEAL,
+	UPGRADE_VISION,
+	CONVERT_RESOURCE,
+	NONE
+}
+
+const INTERACTIONSNAMES: ={
+	InteracActions.ATTACK: "Atacar",
+	InteracActions.COOPERATE: "Cooperar",
+	InteracActions.FLEE: "Fugir",
+}
+
+const WORLDACTIONSNAMES ={
+	WorldActions.MOVEGATHER: "Mover e Coletar",
+	WorldActions.UPGRADE_WEAPON: "Melhorar Arma",
+	WorldActions.HEAL: "Curar",
+	WorldActions.UPGRADE_VISION: "Melhorar Visao",
+	WorldActions.CONVERT_RESOURCE: "Transformar Recurso",
+	WorldActions.NONE: ""
+}
+
 var agent_name: String
 var personality: AgentType
 
