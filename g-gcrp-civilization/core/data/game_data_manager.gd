@@ -29,6 +29,7 @@ func register_agent(agent_id: String, start_position: Vector2i, personality: Age
 	var new_agent = AgentData.new(agent_id, personality, start_position)
 	
 	_ai_agents[agent_id] = new_agent
+	EventBus.agents_updated.emit()
 	return true
 
 # Retorna os status completos do agente,em formato de texto.
@@ -119,6 +120,7 @@ func update_agent_stat(agent_id: String, stat_name: String, value: int) -> void:
 		"health": agent.health += value
 		"combat_power": agent.combat_power += value
 		"vision_range": agent.vision_range += value
+	EventBus.agents_updated.emit()
 
 func update_agent_position(agent_id: String, new_pos: Vector2i) -> bool:
 	if not _ai_agents.has(agent_id): 
@@ -127,6 +129,7 @@ func update_agent_position(agent_id: String, new_pos: Vector2i) -> bool:
 		return false
 		
 	_ai_agents[agent_id].position = new_pos
+	EventBus.agents_updated.emit()
 	return true
 
 # Atualiza itens do inventário (melhorar depois caso seja possível, para evitar erros de digitacao)
@@ -137,11 +140,13 @@ func update_agent_resource(agent_id: String, resource_name: String, amount: int)
 	var agent = _ai_agents[agent_id]
 	if agent.inventory.has(resource_name):
 		agent.inventory[resource_name] += amount
+		EventBus.agents_updated.emit()
 	else:
 		push_warning("Log: Agent [", agent_id, "] inventory doesnt have [", resource_name, "]")
 
 func clear_agents() -> void:
 	_ai_agents.clear()
+	EventBus.agents_updated.emit()
 # ------------------------------------------------------------------------------------------------ #
 # --- Grid/Tiles --------------------------------------------------------------------------------- #
 func _initialize_empty_grid() -> void:

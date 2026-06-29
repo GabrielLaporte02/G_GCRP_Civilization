@@ -1,5 +1,5 @@
 class_name SetupController
-extends Node
+extends CanvasLayer
 
 @onready var background: ColorRect = $Background
 @onready var config_window: PanelContainer = $WorldConfig/PanelContainer
@@ -12,7 +12,9 @@ extends Node
 @onready var btn_close_agent_config: Button = $AgentConfigWindow/MarginContainer/VBoxContainer/HBoxContainer/BtnClose
 @onready var btn_reopen: Button = $RerollHUD/PanelContainer/MarginContainer/HBoxContainer/BtnReopen
 @onready var btn_reroll: Button = $RerollHUD/PanelContainer/MarginContainer/HBoxContainer/BtnReroll
+@onready var btn_start: Button = $RerollHUD/PanelContainer/MarginContainer/HBoxContainer/BtnStart
 @onready var btn_agents: Button = $WorldConfig/PanelContainer/MarginContainer/VBoxContainer/GridContainer/BtnAgents
+@onready var simulation_hud: CanvasLayer = $"../SimulationHUD"
 
 # Referências aos OptionButtons para ler os dados
 @onready var opt_turns: OptionButton = $WorldConfig/PanelContainer/MarginContainer/VBoxContainer/GridContainer/OptionTurns
@@ -25,6 +27,7 @@ func _ready() -> void:
 	background.show()
 	reroll_hud.hide()
 	agent_config.hide()
+	simulation_hud.hide()
 	
 	#Conectando Butoes as suas respectivas funcoes
 	btn_generate.pressed.connect(_on_generate_pressed)
@@ -32,6 +35,7 @@ func _ready() -> void:
 	btn_close_agent_config.pressed.connect(_on_close_agent_config_pressed)
 	btn_reopen.pressed.connect(_on_reopen_pressed)
 	btn_reroll.pressed.connect(_on_reroll_pressed)
+	btn_start.pressed.connect(_on_start_pressed)
 	btn_agents.pressed.connect(_on_agents_pressed)
 	_populate_dropdowns()
 	
@@ -63,6 +67,12 @@ func _on_reopen_pressed() -> void:
 	
 func _on_reroll_pressed() -> void:
 	_trigger_world_generation()
+
+func _on_start_pressed() -> void:
+	hide()
+	simulation_hud.show()
+	EventBus.turn_updated.emit(GameDataManager.get_current_turn())
+	EventBus.agents_updated.emit()
 
 func _on_agents_pressed() -> void:
 	config_window.hide()

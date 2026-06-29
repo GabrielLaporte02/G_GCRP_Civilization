@@ -9,3 +9,4 @@ signal next_turn_requested
 signal turn_lock_changed(is_locked: bool)
 signal loading_api_changed(is_loading: bool)
 signal turn_updated(new_turn_number: int)
+signal agents_updated
