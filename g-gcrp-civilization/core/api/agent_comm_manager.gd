@@ -81,7 +81,7 @@ static func get_status(agent_id:String) -> String:
 
 
 static func get_known_map(agent_id:String) -> String:
-	return "[MAPA_CONHECIDO]"
+	return GameDataManager.get_agent_known_map(agent_id)
 
 
 static func get_current_position(agent_id:String) -> String:
@@ -91,7 +91,7 @@ static func get_current_position(agent_id:String) -> String:
 
 
 static func get_visible_area(agent_id:String) -> String:
-	return "[AREA_VISIVEL]"
+	return GameDataManager.get_agent_seen_map(agent_id)
 
 
 static func get_recent_events(agent_id:String) -> String:

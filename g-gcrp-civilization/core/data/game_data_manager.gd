@@ -9,6 +9,8 @@ var _ai_agents: Dictionary[String, AgentData] = {}
 var current_turn: int = 0
 
 var event_log: Dictionary[String, Array] = {"Messages": [], "Actions": []}
+var action_remember_amout : int = 30
+var message_remember_amout : int = 30
 
 func _ready() -> void:
 	_initialize_empty_grid()
@@ -62,8 +64,13 @@ func get_agent_full_status(agent_id: String) -> String:
 	status_string += "Pedra: " + agent.inventory["stone"] + "\n"
 	return status_string
 
-func get_agent_known_map(agent_id: String):
-	pass
+# Retorna o mapa conhecido pelo agente, em forma de texto.
+func get_agent_known_map(agent_id: String) -> String:
+	if not _ai_agents.has(agent_id): 
+		return ""
+	var agent = _ai_agents[agent_id]
+	agent.update_known_map()
+	return agent.map_to_string(agent.get_known_map())
 
 func get_agent_position(agent_id: String) -> Vector2i:
 	if _ai_agents.has(agent_id):
@@ -71,7 +78,7 @@ func get_agent_position(agent_id: String) -> Vector2i:
 	push_error("Error: Agent not found - " + agent_id)
 	return Vector2i(-1, -1)
 
-func get_agent_vision(agent_id: String) -> Array[Dictionary]:
+func get_agent_vision_grid(agent_id: String) -> Array[Dictionary]:
 	var vision_data: Array[Dictionary] = []
 	
 	if not _ai_agents.has(agent_id):
@@ -87,16 +94,25 @@ func get_agent_vision(agent_id: String) -> Array[Dictionary]:
 			if x >= 0 and x < GRID_WIDTH and y >= 0 and y < GRID_HEIGHT:
 				vision_data.append({
 					"position": Vector2i(x, y),
-					"tile": _grid[x][y]
+					"tile": _grid[x][y],
+					"agents": _get_agents_at_position(Vector2i(x, y))
 				})
 	return vision_data
+
+# Retorna o mapa que o agente consegue ver, em forma de texto.
+func get_agent_seen_map(agent_id: String) -> String:
+	if not _ai_agents.has(agent_id): 
+		return ""
+	var agent = _ai_agents[agent_id]
+	agent.update_seen_map(get_agent_vision_grid(agent_id))
+	return agent.map_to_string(agent.get_seen_map())
 
 # Retorna texto com os eventos e resultados recentemente vistos pelo agente.
 func get_agent_events_and_results(agent_id: String):
 	if not _ai_agents.has(agent_id): 
 		return ""
 	var text = ""
-	for i in get_agent_recent_seen_actions_index(agent_id, 10):
+	for i in get_agent_recent_seen_actions_index(agent_id, action_remember_amout):
 		var action = event_log["Actions"][i]
 		text += action.text + "\n"
 		return text
@@ -106,7 +122,7 @@ func get_agent_conversations(agent_id: String):
 	if not _ai_agents.has(agent_id): 
 		return ""
 	var text = ""
-	for i in get_agent_recent_seen_messages_index(agent_id, 10):
+	for i in get_agent_recent_seen_messages_index(agent_id, message_remember_amout):
 		var message = event_log["Messages"][i]
 		text += message.text + "\n"
 		return text
@@ -143,8 +159,8 @@ func update_agent_resource(agent_id: String, resource_name: String, amount: int)
 
 func clear_agents() -> void:
 	_ai_agents.clear()
-
-# --- GRID/TILES ---
+# ------------------------------------------------------------------------------------------------ #
+# --- Grid/Tiles --------------------------------------------------------------------------------- #
 func get_tile(x: int, y: int) -> GridTile:
 	if x >= 0 and x < GRID_WIDTH and y >= 0 and y < GRID_HEIGHT:
 		return _grid[x][y]
@@ -167,11 +183,43 @@ func set_full_grid(new_grid: Array) -> void:
 	else:
 		push_error("Error: Invalid grid dimensions passed to set_full_grid().")
 
-# --- TURN ---
+# Retorna todos os agentes que estão na posião indicada.
+func _get_agents_at_position(position: Vector2i) -> Array:
+	var result = []
+	for agent in _ai_agents.values():
+		if agent.position == position:
+			result.append(agent.agent_name)
+	return result
+
+# 
+'''func _tile_to_string(tile: GridTile) -> String:
+	var parts = []
+	if tile.food:
+		parts.append("F")
+	if tile.wood:
+		parts.append("W")
+	if tile.stone:
+		parts.append("S")
+	if parts.is_empty():
+		parts.append(".")
+	for agent in _get_agents_at_position(tile.position):
+		parts.append("A(%s)" % agent.name)
+	return " ".join(parts)
+
+func get_full_map() -> Array:
+	var map = []
+	for y in GRID_HEIGHT:
+		var row = []
+		for x in GRID_WIDTH:
+			row.append(_tile_to_string(get_tile(x, y)))
+		map.append(row)
+	return map'''
+# ------------------------------------------------------------------------------------------------ #
+# --- Turn --------------------------------------------------------------------------------------- #
 func get_current_turn() -> int:
 	return current_turn
-
-# --- Events ---
+# ------------------------------------------------------------------------------------------------ #
+# --- Events  ------------------------------------------------------------------------------------ #
 # Cria evento, adiciona ele ao event_log e distribui para os agentes que viram
 # o evento ocorrer.
 func add_event(position: Vector2i, agent_id: String, type: Event.EventType,text: String):
@@ -229,3 +277,4 @@ func get_agent_recent_seen_messages_index(agent_id: String, amount: int):
 	var seen_messages_size = agent.get_seen_messages().size()
 	return agent.memory.actions.slice(max(seen_messages_size - amount, 0),
 									  seen_messages_size)
+# ------------------------------------------------------------------------------------------------ #
