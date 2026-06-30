@@ -1,8 +1,14 @@
 [gd_scene format=3 uid="uid://cxnmghfltd32u"]
 
-[ext_resource type="Script" uid="uid://t24riobxn244" path="res://core/turn_manager/turn_manager.gd" id="1_m2q7a"]
+[ext_resource type="Script" uid="uid://wwtlm0mgjy4r" path="res://core/turn_manager/teste.gd" id="1_04dss"]
+[ext_resource type="Script" uid="uid://vka7kjn0jft6" path="res://core/turn_manager/turn_resolver.gd" id="2_girla"]
+[ext_resource type="Script" uid="uid://da1xvhbb8m3nf" path="res://core/world_generation/world_generator.gd" id="3_girla"]
 
 [node name="TurnManager" type="Node" unique_id=255412736]
-script = ExtResource("1_m2q7a")
+script = ExtResource("1_04dss")
 
 [node name="TurnResolver" type="Node" parent="." unique_id=609490983]
+script = ExtResource("2_girla")
+
+[node name="Node" type="Node" parent="." unique_id=1893074685]
+script = ExtResource("3_girla")

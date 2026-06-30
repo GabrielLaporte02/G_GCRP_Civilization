@@ -9,7 +9,8 @@ enum AgentType {
 enum InteracActions{
 	ATTACK,
 	COOPERATE,
-	FLEE
+	FLEE,
+	NONE
 }
 
 enum WorldActions{
@@ -19,6 +20,13 @@ enum WorldActions{
 	UPGRADE_VISION,
 	CONVERT_RESOURCE,
 	NONE
+}
+
+const ACTION_FROM_STRING = {
+	"Atacar": InteracActions.ATTACK,
+	"Cooperar": InteracActions.COOPERATE,
+	"Fugir": InteracActions.FLEE,
+	"": InteracActions.NONE
 }
 
 const INTERACTIONSNAMES: ={
