@@ -128,9 +128,13 @@ func _get_agent_button_text(agent_id: String) -> String:
 	]
 
 func _format_agent_details(agent: AgentData) -> String:
-	var personality := "Cooperativo"
-	if agent.personality == AgentData.AgentType.AGGRESSIVE:
+	var personality := "Cooperador"
+	if agent.personality == AgentData.AgentType.Egoista:
+		personality = "Egoista"
+	elif agent.personality == AgentData.AgentType.Agressivo:
 		personality = "Agressivo"
+	elif agent.personality == AgentData.AgentType.Estratégico:
+		personality = "Estratégico"
 	
 	var lines := [
 		"Vida: " + str(agent.health),

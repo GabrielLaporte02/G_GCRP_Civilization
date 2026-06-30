@@ -13,6 +13,8 @@ enum TurnState {
 @export var turn_resolver: Node 
 @export var turn_presenter: Node 
 
+@export var generator: Node
+
 var current_state: TurnState = TurnState.CLEANUP_AND_PREP
 var api_is_ready: bool = false
 var current_intentions: Dictionary = {}
@@ -21,7 +23,17 @@ func _ready() -> void:
 	network_handler.intentions_ready.connect(_on_intentions_ready)
 	EventBus.next_turn_requested.connect(_run_next_turn)
 	
+	#generator.generate_world(WorldConfig.AbundanceLevel.SCARCE,WorldConfig.AbundanceLevel.ABUNDANT, WorldConfig.AbundanceLevel.NORMAL,
+	#{"Agente1": AgentData.AgentType.Cooperador, "Agente2": AgentData.AgentType.Cooperador})
+	
+	#GameDataManager.clear_agents()
+	#GameDataManager.register_agent("IA1", Vector2i(0,0), AgentData.AgentType.Cooperador)
+	#GameDataManager.register_agent("IA2", Vector2i(0,0), AgentData.AgentType.Cooperador)
+	
 	_start_prep_phase()
+	
+	#await get_tree().create_timer(10.0).timeout
+	#EventBus.next_turn_requested.emit()
 
 
 func _run_next_turn() -> void:
@@ -31,6 +43,7 @@ func _run_next_turn() -> void:
 	EventBus.turn_lock_changed.emit(true) # Tranca o botão na UI
 
 	# Se a API ainda nao respondeu (jogador rapido demais)
+	print("trava api")
 	if not api_is_ready:
 		current_state = TurnState.WAITING_FOR_API
 		EventBus.loading_api_changed.emit(true)
@@ -48,7 +61,7 @@ func _process_turn_resolution() -> void:
 	var turn_results = turn_resolver.resolve_turn(current_intentions)
 	
 	current_state = TurnState.PRESENTING
-	await turn_presenter.present_turn(turn_results)
+	#await turn_presenter.present_turn(turn_results)
 	
 	_start_prep_phase()
 
@@ -59,11 +72,8 @@ func _start_prep_phase() -> void:
 	api_is_ready = false
 	current_intentions.clear()
 	
-	# Aplica as regras de fome e verifica mortes no banco de dados
-	turn_resolver.apply_end_of_turn_effects()
-	
 	GameDataManager.current_turn += 1
-	EventBus.turn_updated.emit(GameDataManager.current_turn)
+	#EventBus.turn_updated.emit(GameDataManager.current_turn)
 	network_handler.prefetch_intentions()
 	
 	# IMPORTANTE: Libera o controle para o jogador, MAS a rede trabalha no fundo

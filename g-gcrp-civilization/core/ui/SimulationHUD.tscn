@@ -1,11 +1,11 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://ct3gx8s23af45"]
 
-[ext_resource type="Script" path="res://core/ui/simulation_hud.gd" id="1_0puk5"]
+[ext_resource type="Script" uid="uid://ch6emrwsqslxq" path="res://core/ui/simulation_hud.gd" id="1_0puk5"]
 
-[node name="SimulationHUD" type="CanvasLayer"]
+[node name="SimulationHUD" type="CanvasLayer" unique_id=1826885587]
 script = ExtResource("1_0puk5")
 
-[node name="Root" type="Control" parent="."]
+[node name="Root" type="Control" parent="." unique_id=579946929]
 unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 15
@@ -15,7 +15,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="TopBar" type="PanelContainer" parent="Root"]
+[node name="TopBar" type="PanelContainer" parent="Root" unique_id=1068537112]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -25,41 +25,40 @@ offset_right = -16.0
 offset_bottom = 64.0
 grow_horizontal = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="Root/TopBar"]
+[node name="MarginContainer" type="MarginContainer" parent="Root/TopBar" unique_id=1240698751]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 6
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Root/TopBar/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Root/TopBar/MarginContainer" unique_id=1070478905]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="TurnLabel" type="Label" parent="Root/TopBar/MarginContainer/HBoxContainer"]
+[node name="TurnLabel" type="Label" parent="Root/TopBar/MarginContainer/HBoxContainer" unique_id=69051217]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-vertical_alignment = 1
 text = "Turno: 0"
+vertical_alignment = 1
 
-[node name="ApiStatusLabel" type="Label" parent="Root/TopBar/MarginContainer/HBoxContainer"]
+[node name="ApiStatusLabel" type="Label" parent="Root/TopBar/MarginContainer/HBoxContainer" unique_id=227213876]
 unique_name_in_owner = true
 layout_mode = 2
-vertical_alignment = 1
 text = "Pronto"
+vertical_alignment = 1
 
-[node name="BtnNextTurn" type="Button" parent="Root/TopBar/MarginContainer/HBoxContainer"]
+[node name="BtnNextTurn" type="Button" parent="Root/TopBar/MarginContainer/HBoxContainer" unique_id=1066341456]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 text = "Pular Turno"
 
-[node name="AgentPanel" type="PanelContainer" parent="Root"]
+[node name="AgentPanel" type="PanelContainer" parent="Root" unique_id=310709222]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
-anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -332.0
@@ -69,50 +68,49 @@ offset_bottom = -16.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="Root/AgentPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="Root/AgentPanel" unique_id=818306259]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Root/AgentPanel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Root/AgentPanel/MarginContainer" unique_id=66986880]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Title" type="Label" parent="Root/AgentPanel/MarginContainer/VBoxContainer"]
+[node name="Title" type="Label" parent="Root/AgentPanel/MarginContainer/VBoxContainer" unique_id=1973276658]
 layout_mode = 2
 text = "Agentes"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Root/AgentPanel/MarginContainer/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Root/AgentPanel/MarginContainer/VBoxContainer" unique_id=1341277412]
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="AgentsList" type="VBoxContainer" parent="Root/AgentPanel/MarginContainer/VBoxContainer/ScrollContainer"]
+[node name="AgentsList" type="VBoxContainer" parent="Root/AgentPanel/MarginContainer/VBoxContainer/ScrollContainer" unique_id=961929408]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 4
 
-[node name="HSeparator" type="HSeparator" parent="Root/AgentPanel/MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="Root/AgentPanel/MarginContainer/VBoxContainer" unique_id=859142665]
 layout_mode = 2
 
-[node name="AgentNameLabel" type="Label" parent="Root/AgentPanel/MarginContainer/VBoxContainer"]
+[node name="AgentNameLabel" type="Label" parent="Root/AgentPanel/MarginContainer/VBoxContainer" unique_id=1589070773]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Agente"
 
-[node name="AgentDetailsLabel" type="Label" parent="Root/AgentPanel/MarginContainer/VBoxContainer"]
+[node name="AgentDetailsLabel" type="Label" parent="Root/AgentPanel/MarginContainer/VBoxContainer" unique_id=708802807]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 autowrap_mode = 3
-text = ""
 
-[node name="EmptyStateLabel" type="Label" parent="Root/AgentPanel/MarginContainer/VBoxContainer"]
+[node name="EmptyStateLabel" type="Label" parent="Root/AgentPanel/MarginContainer/VBoxContainer" unique_id=309455214]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-autowrap_mode = 3
 text = "Nenhum agente na simulacao."
+autowrap_mode = 3

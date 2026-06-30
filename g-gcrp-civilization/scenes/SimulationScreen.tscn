@@ -1,12 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://bdyn150tiw4n6"]
+[gd_scene format=3 uid="uid://bdyn150tiw4n6"]
 
-[ext_resource type="Script" uid="uid://da1xvhbb8m3nf" path="res://core/world_generation/world_generator.gd" id="1_bcbcq"]
+[ext_resource type="Script" uid="uid://cu0iupkwstx8m" path="res://core/simulation_screen.gd" id="1_0gusp"]
 [ext_resource type="PackedScene" uid="uid://doroey4t3vj1x" path="res://core/world_generation/WorldRenderer.tscn" id="2_2dftf"]
 [ext_resource type="Script" uid="uid://cp1dnqgkltly4" path="res://core/camera/camera_controller.gd" id="3_bcbcq"]
-[ext_resource type="PackedScene" path="res://core/ui/SimulationHUD.tscn" id="4_v28gk"]
+[ext_resource type="PackedScene" uid="uid://ct3gx8s23af45" path="res://core/ui/SimulationHUD.tscn" id="4_v28gk"]
+[ext_resource type="PackedScene" uid="uid://cxnmghfltd32u" path="res://core/turn_manager/TurnManager.tscn" id="5_0gusp"]
 
 [node name="World" type="Node2D" unique_id=1406795208]
-script = ExtResource("1_bcbcq")
+script = ExtResource("1_0gusp")
 
 [node name="World_Grid" parent="." unique_id=1660403770 node_paths=PackedStringArray("agents_container") instance=ExtResource("2_2dftf")]
 agents_container = NodePath("../Agents")
@@ -20,6 +21,12 @@ script = ExtResource("3_bcbcq")
 floor_layer = NodePath("../World_Grid/Floor")
 objects_layer = NodePath("../World_Grid/Objects")
 
-[node name="SimulationHUD" parent="." instance=ExtResource("4_v28gk")]
+[node name="SimulationHUD" parent="." unique_id=782804917 instance=ExtResource("4_v28gk")]
+
+[node name="TurnManager" parent="." unique_id=255412736 instance=ExtResource("5_0gusp")]
+
+[node name="Node" parent="TurnManager" index="2" unique_id=2122739139]
+script = null
 
 [editable path="World_Grid"]
+[editable path="TurnManager"]

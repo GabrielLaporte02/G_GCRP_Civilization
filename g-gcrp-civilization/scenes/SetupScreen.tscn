@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://btrkygu2hh07a" path="res://core/ui/WorldConfig.tscn" id="5_38mba"]
 [ext_resource type="PackedScene" uid="uid://mt0wajrfukcb" path="res://core/ui/RerollHud.tscn" id="6_6ntqm"]
 [ext_resource type="PackedScene" uid="uid://dsrtbfxbjhsoj" path="res://core/ui/AgentConfigWindow.tscn" id="7_tqqwh"]
-[ext_resource type="PackedScene" path="res://core/ui/SimulationHUD.tscn" id="8_eh7c2"]
+[ext_resource type="PackedScene" uid="uid://ct3gx8s23af45" path="res://core/ui/SimulationHUD.tscn" id="8_eh7c2"]
 
 [node name="SetupScreen" type="Node" unique_id=293830041]
 
@@ -49,8 +49,7 @@ offset_top = -150.0
 offset_right = 126.0
 offset_bottom = 150.0
 
-[node name="SimulationHUD" parent="." instance=ExtResource("8_eh7c2")]
-visible = false
+[node name="SimulationHUD" parent="." unique_id=1661417187 instance=ExtResource("8_eh7c2")]
 
 [editable path="World_Grid"]
 [editable path="SetupController/WorldConfig"]

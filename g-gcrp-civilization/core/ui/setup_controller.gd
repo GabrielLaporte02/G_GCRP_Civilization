@@ -1,6 +1,8 @@
 class_name SetupController
 extends CanvasLayer
 
+const SimulationScreen = preload("res://scenes/SimulationScreen.tscn")
+
 @onready var background: ColorRect = $Background
 @onready var config_window: PanelContainer = $WorldConfig/PanelContainer
 @onready var reroll_hud: PanelContainer = $RerollHUD/PanelContainer
@@ -69,10 +71,10 @@ func _on_reroll_pressed() -> void:
 	_trigger_world_generation()
 
 func _on_start_pressed() -> void:
-	hide()
-	simulation_hud.show()
-	EventBus.turn_updated.emit(GameDataManager.get_current_turn())
+	EventBus.turn_updated.emit(0)
 	EventBus.agents_updated.emit()
+	
+	get_tree().change_scene_to_packed(SimulationScreen)
 
 func _on_agents_pressed() -> void:
 	config_window.hide()
