@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Meownarch"
-run/main_scene="uid://c2irdodr1re5q"
+run/main_scene="uid://bkip0onxlu3kl"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="uid://bcevhn4s4rfuj"
 
