@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bdyn150tiw4n6"]
+[gd_scene format=3 uid="uid://bdyn150tiw4n6"]
 
 [ext_resource type="Script" uid="uid://da1xvhbb8m3nf" path="res://core/world_generation/world_generator.gd" id="1_bcbcq"]
 [ext_resource type="PackedScene" uid="uid://doroey4t3vj1x" path="res://core/world_generation/WorldRenderer.tscn" id="2_2dftf"]
@@ -20,6 +20,6 @@ script = ExtResource("3_bcbcq")
 floor_layer = NodePath("../World_Grid/Floor")
 objects_layer = NodePath("../World_Grid/Objects")
 
-[node name="SimulationHUD" parent="." instance=ExtResource("4_v28gk")]
+[node name="SimulationHUD" parent="." unique_id=1841061401 instance=ExtResource("4_v28gk")]
 
 [editable path="World_Grid"]

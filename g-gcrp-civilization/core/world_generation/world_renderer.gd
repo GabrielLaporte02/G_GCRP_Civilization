@@ -72,6 +72,7 @@ func spawn_agents() -> void:
 		var agent_instance = agent_scene.instantiate()
 		agents_container.add_child(agent_instance)
 		agent_instance.setup(agent_id)
+		GameDataManager.agent_body[agent_id] = agent_instance
 			
 		# Calcula posição base (centro do tile)
 		var base_pixel_pos = Vector2(pos.x * tile_size + half_tile, pos.y * tile_size + half_tile)

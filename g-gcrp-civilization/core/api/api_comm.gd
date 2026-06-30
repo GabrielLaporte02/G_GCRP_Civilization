@@ -25,7 +25,7 @@ var get_request_url = ""
 # - Variaveis da API:
 var url = "https://api.replicate.com/v1/predictions"
 # Substitua pelo seu token de API
-var token = "Bote seu token aqui"
+var token = "r8_V0J9ykujMtljW8kk4PNp68s8DGdR0T646RVhs"
 # Bote o modelo que vocé deseja utilizar
 var model = "openai/gpt-4.1-mini"
 
@@ -147,8 +147,19 @@ func send_request(text:String):
 	_send_to_ai()
 
 # Retorna a resposta mais recente a IA.
-func get_response():
-	return get_recent_message()
+func get_response(lower:bool=false):
+	if lower:
+		return get_recent_message().to_lower()
+	else:
+		return get_recent_message() 
+
+func get_response_data():
+	var json := JSON.new()
+	var response_text = get_response(true)
+	if json.parse(response_text) == OK:
+		return json.data
+	else:
+		return null
 
 # Retorna a lista inteira de mensagens enviadas e recebidas que estão guardadas.
 func get_mensages_list():

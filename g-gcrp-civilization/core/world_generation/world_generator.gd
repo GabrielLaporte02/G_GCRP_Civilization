@@ -34,7 +34,7 @@ func generate_world(stone_abundance: WorldConfig.AbundanceLevel,
 			# Lembrar de criar algo para definir o amount de recursos em um unico tile depois
 			var amount = 0
 			if tile_type != GridTile.TileType.EMPTY:
-				amount = 50 
+				amount = 30
 				
 			column.append(GridTile.new(tile_type, amount))
 		new_grid.append(column)

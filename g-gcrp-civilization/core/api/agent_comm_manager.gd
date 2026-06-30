@@ -52,13 +52,13 @@ DECIDA SUAS AÇÕES
 Com base nas informações acima:
 
 Escolha uma ação:
+"Coletar"
 "atacar nome_do_alvo"
 "cooperar"
 "fugir"
 "melhorar_arma"
 "curar"
 "melhorar_visao"
-"transformar_recurso recurso_1 recurso_2"
 
 Escreva uma mensagem:
 Voce pode escrever uma mensagem de no máximo 80 caracteres ou uma string vazia.
@@ -107,6 +107,7 @@ static func get_recent_messages(agent_id:String) -> String:
 # --- Funções de comunicação com IA  ------------------------------------------------------------- #
 func send_message(agent_id:String):
 	var message = create_message_to_agent(agent_id)
-	#print(message)
+	if agent_id == "1":
+		print(message)
 	send_request(message)
 # ------------------------------------------------------------------------------------------------ #

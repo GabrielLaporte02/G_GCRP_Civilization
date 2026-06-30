@@ -2,9 +2,9 @@ extends Resource
 class_name AgentData
 
 enum AgentType {
-	Cooperador,
+	COOPERATIVE,
 	Egoista,
-	Agressivo,
+	AGGRESSIVE,
 	Estratégico
 }
 
@@ -46,6 +46,7 @@ const WORLDACTIONSNAMES ={
 	WorldActions.NONE: ""
 }
 
+var id : String
 var agent_name: String
 var personality: AgentType
 
@@ -63,17 +64,18 @@ var seen_map = []
 
 
 # --- Funções do sistema  ------------------------------------------------------------------------ #
-func _init(_agent_name: String = "", _personality: AgentType = AgentType.Cooperador,
+func _init(_id: String, _agent_name: String = "", _personality: AgentType = AgentType.COOPERATIVE,
 			_position: Vector2i = Vector2i.ZERO) -> void:
 	
+	id = _id
 	agent_name = _agent_name
 	personality = _personality
 	
 	position = _position
 	health = 5
 	combat_power = 1
-	vision_range = 1
-	inventory["food"] = 2
+	vision_range = 2
+	inventory["food"] = 10
 	inventory["wood"] = 0
 	inventory["stone"] = 0
 	initialize_known_map(GameDataManager.GRID_WIDTH, GameDataManager.GRID_HEIGHT)
@@ -142,6 +144,7 @@ func update_seen_map(vision_data: Array[Dictionary]):
 			3:
 				is_stone = true
 		var agents = data["agents"]
+		agents.erase(agent_name)
 		var memory := TileMemory.new(pos.x, pos.y)
 		memory.update(is_food, is_wood, is_stone, agents)
 		# Add TileMemory a matriz:
@@ -186,12 +189,38 @@ func get_seen_messages():
 func personality_as_text():
 	var text = ""
 	match personality:
-		AgentType.Cooperador:
+		AgentType.COOPERATIVE:
 			text = "Cooperador"
 		AgentType.Egoista:
 			text = "Egoista"
-		AgentType.Agressivo:
+		AgentType.AGGRESSIVE:
 			text = "Agressivo"
 		AgentType.Estratégico:
 			text = "Estratégico"
 	return text
+
+
+func anda_norte():
+	var y = position.y - 1
+	if y < 0:
+		y = 0
+	position.y = y
+	GameDataManager.agent_body[id].move_to(position)
+
+func anda_sul():
+	position.y = min(position.y + 1, GameDataManager.GRID_HEIGHT - 1)
+	GameDataManager.agent_body[id].move_to(position)
+
+func anda_leste():
+	var x = position.x - 1
+	if x < 0:
+		x = 0
+	position.x = x
+	GameDataManager.agent_body[id].move_to(position)
+
+func anda_oeste():
+	position.x = min(position.x - 1, GameDataManager.GRID_WIDTH - 1)
+	GameDataManager.agent_body[id].move_to(position)
+
+func die():
+	GameDataManager.agent_body[id].die()

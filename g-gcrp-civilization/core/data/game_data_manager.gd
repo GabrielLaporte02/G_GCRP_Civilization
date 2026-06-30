@@ -6,6 +6,7 @@ const GRID_HEIGHT: int = 10
 
 var _grid: Array = []
 var _ai_agents: Dictionary[String, AgentData] = {}
+var agent_body: Dictionary[String, AgentSprite] = {}
 var current_turn: int = 0
 
 var event_log: Dictionary[String, Array] = {"Messages": [], "Actions": []}
@@ -15,8 +16,8 @@ var message_remember_amout : int = 30
 # --- Funções do sistema  ------------------------------------------------------------------------ #
 func _ready() -> void:
 	_initialize_empty_grid()
-	register_agent("1", Vector2i(1,1), AgentData.AgentType.Cooperador)
-	register_agent("2", Vector2i(1,6), AgentData.AgentType.Cooperador)
+	#register_agent("1", Vector2i(1,1), AgentData.AgentType.Cooperador)
+	#register_agent("2", Vector2i(1,6), AgentData.AgentType.Cooperador)
 # ------------------------------------------------------------------------------------------------ #
 # --- AI Agents ---------------------------------------------------------------------------------- #
 func register_agent(agent_id: String, start_position: Vector2i, personality: AgentData.AgentType) -> bool:
@@ -28,11 +29,34 @@ func register_agent(agent_id: String, start_position: Vector2i, personality: Age
 		push_warning("Warning: Agent ID already exists - " + agent_id)
 		return false
 	
-	var new_agent = AgentData.new(agent_id, personality, start_position)
+	var new_agent = AgentData.new(agent_id, agent_id.to_lower(), personality, start_position)
 	
 	_ai_agents[agent_id] = new_agent
 	EventBus.agents_updated.emit()
 	return true
+
+func get_agent_by_id(id:String):
+	if not _ai_agents.has(id): 
+		return
+	return _ai_agents[id]
+
+func get_agent_by_name(name:String):
+	for agent_id in _ai_agents.keys():
+		if _ai_agents[agent_id].agent_name == name:
+			return _ai_agents[agent_id]
+
+func get_agent_body(id:String):
+	if not agent_body.has(id): 
+		return
+	return agent_body[id]
+
+func is_next_to(agent_id: String, target_position:Vector2i):
+	if not _ai_agents.has(agent_id): 
+		return false
+	var agent = _ai_agents[agent_id]
+	var distance = max(abs(agent.position.x - target_position.x),
+						   abs(agent.position.y - target_position.y))
+	return distance <= 1
 
 # Retorna os status completos do agente,em formato de texto.
 func get_agent_full_status(agent_id: String) -> String:
@@ -141,7 +165,7 @@ func update_agent_resource(agent_id: String, resource_name: String, amount: int)
 	
 	var agent = _ai_agents[agent_id]
 	if agent.inventory.has(resource_name):
-		agent.inventory[resource_name] += amount
+		agent.inventory[resource_name] = max(agent.inventory[resource_name] + amount, 0)
 		EventBus.agents_updated.emit()
 	else:
 		push_warning("Log: Agent [", agent_id, "] inventory doesnt have [", resource_name, "]")
@@ -175,7 +199,11 @@ func get_tile(x: int, y: int) -> GridTile:
 	
 	push_error("Error: Out of bounds grid access at: ", x, ", ", y)
 	return null
-	
+
+func get_tile_type(x: int, y: int):
+	var tile = get_tile(x,y)
+	return tile.type
+
 func get_full_grid() -> Array:
 	return _grid
 
@@ -215,6 +243,7 @@ func add_event(position: Vector2i, agent_id: String, type: Event.EventType,text:
 		event_log["Actions"].append(event)
 	elif type == Event.EventType.MESSAGE:
 		event_log["Messages"].append(event)
+	print(text)
 	# Distrinui evento:
 	_distribute_event(event)
 
@@ -230,7 +259,7 @@ func _distribute_event(event:Event):
 		# Se evento é ação e está dentro da área de visão,
 		# ação foi vista pelo agente.
 		if event.type == Event.EventType.ACTION:
-			if distance <= agent.vision:
+			if distance <= agent.vision_range:
 				var index = event_log["Actions"].size() - 1
 				agent.add_seen_actions(index)
 		# Se evento é mensagem e está adjacente ou na mesma posição,

@@ -3,9 +3,9 @@ extends Node
 #Lembrar de colocar o ID de cada ia no raw_intentions, ficando {"IA_1": resposta ia1, "IA_2": reoista ia2}
 func resolve_turn(raw_intentions: Dictionary) -> Dictionary:
 	var turn_results: Dictionary = {"logs": [], "mortes": []}
-	var imunes: Dictionary = {} 
+	var imunes: Dictionary = {}
 	
-	# 1. Identificar Esquivas e Validar Ações 
+	# 1. Identificar Esquivas e Validar Ações
 	for agent_id in raw_intentions:
 		var intent = raw_intentions[agent_id].get("interacao_agente", {})
 		var action_str = intent.get("acao", "")
@@ -76,7 +76,6 @@ func resolve_turn(raw_intentions: Dictionary) -> Dictionary:
 							GameDataManager.update_agent_resource(id, "food", amount_to_give)
 				
 				turn_results["logs"].append("%s cooperou no tile %s." % [agent_id, str(pos)])
-			
 	return turn_results
 
 func _process_resource_theft(attacker, target):
