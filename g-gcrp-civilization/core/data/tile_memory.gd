@@ -15,7 +15,7 @@ func _init(x : int, y : int) -> void:
 	tile_cord = Vector2i(x, y)
 
 # Atualiza o que tem no tile.
-func update(food: bool, wood: bool, stone: bool, visible_agents: Array[String]) -> void:
+func update(food: bool, wood: bool, stone: bool, visible_agents: Array) -> void:
 	known = true
 	has_food = food
 	has_wood = wood

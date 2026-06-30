@@ -15,6 +15,8 @@ var message_remember_amout : int = 30
 # --- Funções do sistema  ------------------------------------------------------------------------ #
 func _ready() -> void:
 	_initialize_empty_grid()
+	register_agent("1", Vector2i(1,1), AgentData.AgentType.Cooperador)
+	register_agent("2", Vector2i(1,6), AgentData.AgentType.Cooperador)
 # ------------------------------------------------------------------------------------------------ #
 # --- AI Agents ---------------------------------------------------------------------------------- #
 func register_agent(agent_id: String, start_position: Vector2i, personality: AgentData.AgentType) -> bool:
@@ -39,13 +41,13 @@ func get_agent_full_status(agent_id: String) -> String:
 	var agent = _ai_agents[agent_id]
 	var status_string = ""
 	status_string += "Nome: " + agent.agent_name + "\n"
-	status_string += "Vida: " + agent.health + "\n"
-	status_string += "Combate: " + agent.combat_power + "\n"
-	status_string += "Visão: " + agent.vision_range + "\n"
-	status_string += "Personalidade: " + agent.personality + "\n"
-	status_string += "Comida: " + agent.inventory["food"] + "\n"
-	status_string += "Madeira: " + agent.inventory["wood"] + "\n"
-	status_string += "Pedra: " + agent.inventory["stone"] + "\n"
+	status_string += "Vida: " + str(agent.health) + "\n"
+	status_string += "Combate: " + str(agent.combat_power) + "\n"
+	status_string += "Visão: " + str(agent.vision_range) + "\n"
+	status_string += "Personalidade: " + agent.personality_as_text() + "\n"
+	status_string += "Comida: " + str(agent.inventory["food"]) + "\n"
+	status_string += "Madeira: " + str(agent.inventory["wood"]) + "\n"
+	status_string += "Pedra: " + str(agent.inventory["stone"]) + "\n"
 	return status_string
 
 # Retorna o mapa conhecido pelo agente, em forma de texto.
@@ -93,13 +95,13 @@ func get_agent_seen_map(agent_id: String) -> String:
 
 # Retorna texto com os eventos e resultados recentemente vistos pelo agente.
 func get_agent_events_and_results(agent_id: String):
-	if not _ai_agents.has(agent_id): 
+	if not _ai_agents.has(agent_id):
 		return ""
 	var text = ""
 	for i in get_agent_recent_seen_actions_index(agent_id, action_remember_amout):
 		var action = event_log["Actions"][i]
 		text += action.text + "\n"
-		return text
+	return text
 
 # Retorna texto com as mensagens recentemente recebidas e enviadas pelo agente.
 func get_agent_conversations(agent_id: String):
@@ -109,7 +111,7 @@ func get_agent_conversations(agent_id: String):
 	for i in get_agent_recent_seen_messages_index(agent_id, message_remember_amout):
 		var message = event_log["Messages"][i]
 		text += message.text + "\n"
-		return text
+	return text
 
 func update_agent_stat(agent_id: String, stat_name: String, value: int) -> void:
 	if not _ai_agents.has(agent_id): 
@@ -246,7 +248,7 @@ func get_agent_recent_seen_actions_index(agent_id: String, amount: int):
 		return
 	var agent = _ai_agents[agent_id]
 	var seen_actions_size = agent.get_seen_actions().size()
-	return agent.memory.actions.slice(max(seen_actions_size - amount, 0),
+	return agent.get_seen_actions().slice(max(seen_actions_size - amount, 0),
 									  seen_actions_size)
 
 # Retorna lista com os indices das mensagens recentemente recebidas e enviadas
@@ -257,6 +259,6 @@ func get_agent_recent_seen_messages_index(agent_id: String, amount: int):
 		return
 	var agent = _ai_agents[agent_id]
 	var seen_messages_size = agent.get_seen_messages().size()
-	return agent.memory.actions.slice(max(seen_messages_size - amount, 0),
+	return agent.get_seen_messages().slice(max(seen_messages_size - amount, 0),
 									  seen_messages_size)
 # ------------------------------------------------------------------------------------------------ #

@@ -18,7 +18,8 @@ CONHECIMENTO Você não conhece a decisão que os demais agentes tomarão
 neste turno. Você conhece apenas: - agentes visíveis; - mensagens
 recebidas; - eventos anteriores; - mapa conhecido.
 
-PERSONALIDADES Cooperador: - Prefere cooperação. - Evita conflitos.
+PERSONALIDADES
+Cooperador: - Prefere cooperação. - Evita conflitos.
 
 Egoísta: - Prioriza a própria sobrevivência. - Coopera apenas quando
 obtém vantagem.
@@ -158,6 +159,7 @@ Elas podem ser:
 
 "transformar_recurso recurso_1 recurso_2"
 - Converte 3 unidades do recurso_1 em uma unidade do recurso_2
+- recursos podem ser "comida", "madera" e "pedra"
 
 ENVIO DE MENSAGEM
 

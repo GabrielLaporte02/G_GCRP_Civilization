@@ -2,8 +2,10 @@ extends Resource
 class_name AgentData
 
 enum AgentType {
-	AGGRESSIVE,
-	COOPERATIVE
+	Cooperador,
+	Egoista,
+	Agressivo,
+	Estratégico
 }
 
 enum InteracActions{
@@ -56,12 +58,12 @@ var inventory: Dictionary
 var seen_actions = []
 var seen_messages = []
 
-var known_map : Array[Array]
-var seen_map : Array[Array]
+var known_map = []
+var seen_map = []
 
 
 # --- Funções do sistema  ------------------------------------------------------------------------ #
-func _init(_agent_name: String = "", _personality: AgentType = AgentType.COOPERATIVE,
+func _init(_agent_name: String = "", _personality: AgentType = AgentType.Cooperador,
 			_position: Vector2i = Vector2i.ZERO) -> void:
 	
 	agent_name = _agent_name
@@ -127,9 +129,21 @@ func update_seen_map(vision_data: Array[Dictionary]):
 	for data in vision_data:
 		var pos: Vector2i = data["position"]
 		var tile: GridTile = data["tile"]
+		var is_food = false
+		var is_wood = false
+		var is_stone = false
+		match tile.type:
+			0:
+				pass
+			1:
+				is_wood = true
+			2:
+				is_food = true
+			3:
+				is_stone = true
 		var agents = data["agents"]
 		var memory := TileMemory.new(pos.x, pos.y)
-		memory.update(tile.food, tile.wood, tile.stone, agents)
+		memory.update(is_food, is_wood, is_stone, agents)
 		# Add TileMemory a matriz:
 		var local_x = pos.x - min_x
 		var local_y = pos.y - min_y
@@ -168,3 +182,16 @@ func get_seen_actions():
 func get_seen_messages():
 	return seen_messages
 # ------------------------------------------------------------------------------------------------ #
+
+func personality_as_text():
+	var text = ""
+	match personality:
+		AgentType.Cooperador:
+			text = "Cooperador"
+		AgentType.Egoista:
+			text = "Egoista"
+		AgentType.Agressivo:
+			text = "Agressivo"
+		AgentType.Estratégico:
+			text = "Estratégico"
+	return text

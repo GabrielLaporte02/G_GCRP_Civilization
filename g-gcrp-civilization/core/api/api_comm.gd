@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 class_name API_Communication
 
 # Sinal utilizado para conectar com funções que serão executadas quando a
@@ -25,7 +25,7 @@ var get_request_url = ""
 # - Variaveis da API:
 var url = "https://api.replicate.com/v1/predictions"
 # Substitua pelo seu token de API
-var token = "r8_9KRYViL5VCGUOrMLmJsjXErgoexfxLw3Xy79b"
+var token = "Bote seu token aqui"
 # Bote o modelo que vocé deseja utilizar
 var model = "openai/gpt-4.1-mini"
 
@@ -100,7 +100,12 @@ func _on_HTTPRequest_request_completed(_result, _response_code, _headers, body):
 	var json = JSON.parse_string(body.get_string_from_utf8())
 	# Estado de criação: obtem o status e faz a consulta do resultado.
 	if current_request_stage == Request_Stages.CREATE:
-		get_request_url = json["urls"]["get"]
+		if json.has("urls") and json["urls"].has("get"):
+			get_request_url = json["urls"]["get"]
+		else:
+			print("Resposta inesperada:")
+			print(json)
+			return
 		current_request_stage = Request_Stages.POLL
 		await get_tree().create_timer(1.0).timeout
 		_check_result(get_request_url)
