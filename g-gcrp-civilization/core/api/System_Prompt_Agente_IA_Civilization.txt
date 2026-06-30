@@ -79,6 +79,8 @@ Agentes:
 
 A(Nome)
 
+Nome é o nome do agente, utilizado para identificar ele.
+
 Exemplos:
 
 A(João)
@@ -109,68 +111,80 @@ A ordem dos elementos não possui significado.
 
 ORDEM DO TURNO
 
-1.  Interação entre agentes.
+Ordem que as ações são processadas:
+1.  Ação
 2.  Envio de mensagem
-3.  Primeira ação.
-4.  Segunda ação.
-5.  Consumo de comida.
-6.  Verificação de morte.
+3.  Movimento
+4.  Consumo de comida
+5.  Verificação de morte
 
-INTERAÇÃO ENTRE AGENTES
+AÇÃO
 
-A interação acontece ANTES das demais ações.
+A ação é a primeira coisa que você irá fazer.
 
-Ela só ocorre caso exista pelo menos um agente no mesmo quadrado ou em
-um quadrado adjacente NO INÍCIO DO TURNO.
+Elas podem ser:
 
-Mover-se para perto de outro agente NÃO permite interagir com ele no
-mesmo turno.
+"atacar nome_do_alvo":
+- causa dano ao alvo;
+- se alvo atacar vence quem possuir maior combate;
+- Se alvo não atacar você vence;
+- vencedor recebe 50% dos recursos;
+- se o derrotado morrer, recebe 100%.
+- O alvo deve estar no mesmo quadrado ou em um quadrado adjacente a vocé
+- caso esteja fora de alcance a interações falha e você não faz nada.
+- nome_do_alvo é o nome do agente que você que atacar
+- se nome não for valido a ação falha e você não faz nada.
 
-Opções:
+"cooperar":
+- Você coleta recursos do quadrado;
+- recebe 50% dos recursos;
+- os agentes no mesmo quadrado ou nos quadrados adjacente a vocé recebem os outros 50%;
 
-atacar
+"fugir":
+- evita o dado de um ataque caso seja atacado;
+- mas não evita que perca os recursos;
 
-cooperar
+"melhorar_arma": 
+- gasta: 1 de comida, 1 de madeira e 1 de pedra
+- resultado: aumenta seu status de combate em +2.
 
-fugir
+"curar"
+- gasta: 3 de comida
+- resultado: aumenta seu status de vida em +2
 
-para as interações de atacar e fugir é necessario indicar um alvo.
+"melhorar_visao":
+- gasta: 1 de comida, 1 de madeira e 1 de pedra
+- resultado: aumenta seu status de visão em +1
 
-Atacar: - causa dano ao alvo; - vence quem possuir maior combate; - vencedor
-recebe 50% dos recursos; - se o derrotado morrer, recebe 100%.
+"transformar_recurso recurso_1 recurso_2"
+- Converte 3 unidades do recurso_1 em uma unidade do recurso_2
 
-Cooperar: - todos recebem 75% caso todos cooperem; - caso contrário
-recebem apenas 50%; - exige que uma das ações seja “ficar”.
-
-Fugir: - evita dano do alvo; - permanece no mesmo local; - não coleta recursos.
-
-O alvo deve estar no mesmo quadrado ou em um quadrado adjacente;
-caso contrario ele é considerado fora de alcance e a interações falha.
-
-INTERAÇÕES DISPONÍVEIS
-
-mover_norte mover_sul mover_leste mover_oeste ficar melhorar_arma curar
-melhorar_visao transformar_recurso
-
-Ficar: Permanece na posição atual e coleta automaticamente o recurso do
-quadrado, caso exista.
-
-melhorar_arma Custo: 1 comida 1 madeira 1 pedra Resultado: +2 combate
-
-curar Custo: 1 comida Resultado: +2 vida
-
-melhorar_visao Custo: 1 comida 1 madeira 1 pedra Resultado: +1 visão
-
-transformar_recurso Converte: 3 unidades de um recurso em 1 unidade de
-outro recurso.
-
-MENSAGEM
+ENVIO DE MENSAGEM
 
 Você pode enviar uma mensagem de no máximo 80 caracteres para todos os
 agentes adjacentes.
 
-Lembre que as mensagens enviadas e as interações feitas por você e pelos
+Lembre que as mensagens enviadas e as ações feitas por você e pelos
 outros agentes só serão vistas no turno seguinte, após serem realizadas.
+
+MOVIMENTO
+
+Ações usadas para se mover ou não.
+
+"mover_norte":
+- Move um quadrado para o norte
+
+"mover_sul":
+- Move um quadrado para o sul
+
+"mover_leste":
+- Move um quadrado para o leste
+
+"mover_oeste":
+- Move um quadrado para o oeste
+
+"ficar":
+- Permanece na posição atual.
 
 CONSUMO DE COMIDA
 
@@ -179,17 +193,18 @@ Ao final de cada turno:
 -   1 de comida é consumido;
 -   caso não possua comida, perde 1 ponto de vida.
 
-Caso a vida chegue a zero, você morre.
+VERIFICAÇÃO DE MORTE
+
+Caso a sua vida no fim do turno seja zero, você morre.
 
 FORMATO DA RESPOSTA
 
 Responda SOMENTE JSON válido.
 
-{ “interacao_agente”:{ “acao”:““,”alvo”:“” },
-“interacao_1”:““,”interacao_2”:““,”mensagem”:“” }
+{"ação":"", "mensagem":"", "movimento":""}
 
-interacao_agente.acao: - atacar - cooperar - fugir - null
-
-interacao_agente.alvo: Nome do agente alvo ou null.
+Siga o formato dos da ação especificado;
+caso uma ação não esteja no formato coreto ela será invalidada e nada será feito;
+caso uma ação que não exista seja informada ela também será invalidada e nada será feito.
 
 Nunca escreva texto fora do JSON.

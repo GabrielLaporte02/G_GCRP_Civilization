@@ -138,7 +138,7 @@ func map_to_string(map: Array) -> String:
 	for row in map:
 		for tile: TileMemory in row:
 			if tile != null:
-				text += tile.as_string() + "\n"
+				text += tile.as_string(position) + "\n"
 	return text
 # ------------------------------------------------------------------------------------------------ #
 # --- Seen Actions/Messages ---------------------------------------------------------------------- #

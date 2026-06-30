@@ -25,11 +25,13 @@ func update(food: bool, wood: bool, stone: bool, visible_agents: Array[String]) 
 
 
 # Retorna o que tem no tile como formato de uma string.
-func as_string() -> String:
+func as_string(agent_position:Vector2i) -> String:
 	var content: Array[String] = []
 	if !known:
 		content.append("?")
 	else:
+		if agent_position == tile_cord:
+			content.append("X")
 		if has_food:
 			content.append("F")
 		if has_wood:
