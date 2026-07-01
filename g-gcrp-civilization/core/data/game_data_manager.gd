@@ -10,8 +10,8 @@ var agent_body: Dictionary[String, AgentSprite] = {}
 var current_turn: int = 0
 
 var event_log: Dictionary[String, Array] = {"Messages": [], "Actions": []}
-var action_remember_amout : int = 30
-var message_remember_amout : int = 30
+var action_remember_amout : int = 40
+var message_remember_amout : int = 40
 
 # --- Funções do sistema  ------------------------------------------------------------------------ #
 func _ready() -> void:
