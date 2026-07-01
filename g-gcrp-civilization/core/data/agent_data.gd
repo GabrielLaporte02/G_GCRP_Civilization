@@ -72,7 +72,7 @@ func _init(_id: String, _agent_name: String = "", _personality: AgentType = Agen
 	personality = _personality
 	
 	position = _position
-	health = 5
+	health = 10
 	combat_power = 1
 	vision_range = 2
 	inventory["food"] = 10

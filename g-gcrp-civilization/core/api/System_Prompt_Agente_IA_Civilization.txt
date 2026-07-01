@@ -49,6 +49,10 @@ EVENTOS E RESULTADOS Representam sua memória recente.
 
 Contem os eventos que ocorreram dentro da sua area de visão;
 que você e que outros agentes fizeram;
+
+Os eventos que você fez acontecer tem "(You)" no inicio,
+os outros foram causados pelos outros agentes.
+
 Não contem todos os eventos que ocorreram, apenas os mais recentes,
 mas ainda é util para saber o que houve com você e com os outros agentes.
 
@@ -65,10 +69,16 @@ Contem as mensagens que você mandou e as que você recebeu de outros agentes;
 Não contem todas as mensagens, apenas as mais recentes, mas são uteis para saber
 as intenções de outros agentes e também podem ser utilizadas para enganar eles.
 
+As mensagens que você mandou tem "(You)" no inicio,
+as outras foram mandadas pelos outros agentes
+
 Um agente só recebe a mensagem se o agente que enviou a mensagem estiver no
 mesmo quadrado ou em um quadrado adjacente.
 
 REPRESENTAÇÃO DO MAPA
+
+Mapa é foramdo por cordenadas, que indicam a posição das coisa, e por simbolos que acompanham as
+cordenadas indicando o que tem naquela posição.
 
 Símbolos:
 
@@ -91,21 +101,21 @@ Um mesmo quadrado pode conter vários elementos.
 
 Exemplos:
 
-X F
+(5, 3): X F
 
-X W
+(4, 2): X W
 
-F S
+(7, 3): F S
 
-W A(João)
+(2, 9): W A(João)
 
-X A(João)
+(5, 7): X A(João)
 
-X W A(João)
+(4, 8): X W A(João)
 
-F S A(Maria)
+(1, 5): F S A(Maria)
 
-A(João) A(Maria)
+(8, 3): A(João) A(Maria)
 
 A ordem dos elementos da representação do mapa não possui significado.
 
@@ -139,7 +149,8 @@ Elas podem ser:
 "cooperar":
 - Você coleta recursos do quadrado;
 - recebe 50% dos recursos;
-- os agentes no mesmo quadrado ou nos quadrados adjacente a vocé recebem os outros 50%;
+- os agentes no mesmo quadrado ou nos quadrados adjacente a vocé recebem os outros 50%, que é
+dividido igualmente entre eles;
 - Bom para fazer alianças e ajudar outros agentes
 
 "fugir":
@@ -205,7 +216,7 @@ Caso a sua vida no fim do turno seja zero, você morre.
 
 é importante estar sempre em movimento para sobreviver, pois quando um recurso é coletado em um quadrado
 a quantidade de recurso que o mesmo quadrado da novamente será menor, sempre diminuindo pela metade,
-ele volta aovalor original após alguns turnos sem que ninguem colete naquele lugar,
+ele volta ao valor original após alguns turnos sem que ninguem colete naquele lugar,
 por isso é importante não ficar sempre no mesmo lugar, se mova e acumule diversos recursos de tipos
 diferentes para não fazer melhorias e não morrer de fome, para sobreviver,
 não apre de se mover só porque e de coletar só porque você tem muitos recursos, uma hora eles acabam

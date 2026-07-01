@@ -67,6 +67,7 @@ func simulation():
 			end_turn_state()
 
 func turn_start():
+	print("Turno iniciado")
 	current_state = TurnState.SEND_MESSAGE_API
 
 func _on_start_turn():
@@ -145,13 +146,17 @@ func actions_state():
 				GameDataManager.add_event(agent.position, agent_id, Event.EventType.ACTION,
 				"%s: tentou atacar %s, mas ele está fora do alcance" % [agent.agent_name, target_name])
 				continue
+			var target_action := ""
+			if action_dict.has(target.id):
+				target_action = action_dict[target.id]
+			if target_action == "fugir":
+				GameDataManager.add_event(agent.position, agent_id, Event.EventType.ACTION,
+				"%s: tentou atacar %s, mas ele fugiu e evitou o dano." % [agent.agent_name, target.agent_name])
+				continue
 			# dano = combat_power
 			GameDataManager.update_agent_stat(target.id, "health", -agent.combat_power)
-			var event_text = "%s atacou %s (-%d vida)" % [
-				agent.agent_name,
-				target.agent_name,
-				agent.combat_power
-			]
+			var event_text = "%s: atacou %s que perdeu %d de vida" % [agent.agent_name, target.agent_name,
+														  agent.combat_power]
 			# morreu → rouba tudo
 			if target.health <= 0:
 				for k in target.inventory.keys():
@@ -169,15 +174,17 @@ func actions_state():
 			match tile.type:
 				GridTile.TileType.FOOD:
 					GameDataManager.update_agent_resource(agent_id, "food", amount)
-					event_text = "%s coletou %d comida." % [agent.agent_name, amount]
+					event_text = "%s coletou %d de comida." % [agent.agent_name, amount]
 				GridTile.TileType.WOOD:
 					GameDataManager.update_agent_resource(agent_id, "wood", amount)
-					event_text = "%s coletou %d madeira." % [agent.agent_name, amount]
+					event_text = "%s coletou %d de madeira." % [agent.agent_name, amount]
 				GridTile.TileType.STONE:
 					GameDataManager.update_agent_resource(agent_id, "stone", amount)
-					event_text = "%s coletou %d pedra." % [agent.agent_name, amount]
+					event_text = "%s coletou %d de pedra." % [agent.agent_name, amount]
 				GridTile.TileType.EMPTY:
 					event_text = "%s tentou coletar, mas não havia recursos." % agent.agent_name
+			if amount <= 0:
+				event_text += "Não há mais recursos para coletar neste lugar"
 			GameDataManager.add_event(agent.position, agent_id, Event.EventType.ACTION, event_text)
 		# =====================================================
 		# COOPERAR
@@ -187,13 +194,22 @@ func actions_state():
 			var total = tile.get_amount()
 			var mine = int(total * 0.5)
 			var shared = total - mine
+			var event_text = "%s: Escolheu coperar," % agent.agent_name
+			if total <= 0:
+				event_text += "Não há mais recursos para coletar neste lugar, não foi possivel coperar."
+				GameDataManager.add_event(agent.position, agent_id, Event.EventType.ACTION,
+				event_text)
+				continue
 			match tile.type:
 				GridTile.TileType.FOOD:
 					GameDataManager.update_agent_resource(agent_id, "food", mine)
+					event_text += " %s recebeu %d de comida," % [agent.agent_name, mine]
 				GridTile.TileType.WOOD:
 					GameDataManager.update_agent_resource(agent_id, "wood", mine)
+					event_text += " %s recebeu %d de madeira," % [agent.agent_name, mine]
 				GridTile.TileType.STONE:
 					GameDataManager.update_agent_resource(agent_id, "stone", mine)
+					event_text += " %s recebeu %d de pedra," % [agent.agent_name, mine]
 			var receivers = []
 			for other in GameDataManager._ai_agents.values():
 				if other.id == agent.id:
@@ -206,15 +222,18 @@ func actions_state():
 					match tile.type:
 						GridTile.TileType.FOOD:
 							GameDataManager.update_agent_resource(other.id, "food", each)
+							event_text += " os agentes ao redor receberam %d de comida cada," % [each]
 						GridTile.TileType.WOOD:
 							GameDataManager.update_agent_resource(other.id, "wood", each)
+							event_text += " os agentes ao redor receberam %d de madeira cada," % [each]
 						GridTile.TileType.STONE:
 							GameDataManager.update_agent_resource(other.id, "stone", each)
-				GameDataManager.add_event(agent.position, agent_id, Event.EventType.ACTION,
-					"%s: cooperou e compartilhou recursos." % agent.agent_name)
+							event_text += " os agentes ao redor receberam %d de pedra cada, " % [each]
+				event_text += "coperação funcionou."
 			else:
-				GameDataManager.add_event(agent.position, agent_id, Event.EventType.ACTION,
-					"%s: tentou cooperar, mas não tinha ninguem por perto." % agent.agent_name)
+				event_text += "%s tentou cooperar, mas não tinha ninguem por perto para compartilhar." % agent.agent_name
+			GameDataManager.add_event(agent.position, agent_id, Event.EventType.ACTION,
+			event_text)
 		# =====================================================
 		# FUGIR
 		# =====================================================
@@ -336,10 +355,15 @@ func lose_food_state():
 	# CONSUMO DE COMIDA FINAL
 	# =========================
 	for agent_id in GameDataManager._ai_agents.keys():
-		GameDataManager.update_agent_resource(agent_id, "food", -5)
 		var ag = GameDataManager.get_agent_by_id(agent_id)
-		if ag.inventory["food"] <= 0:
+		if ag.inventory["food"] > 0:
+			GameDataManager.update_agent_resource(agent_id, "food", -5)
+			GameDataManager.add_event(ag.position, agent_id, Event.EventType.ACTION,
+			'%s: Consumiu 5 de comida.' % ag.agent_name)
+		else:
 			GameDataManager.update_agent_stat(agent_id, "health", -1)
+			GameDataManager.add_event(ag.position, agent_id, Event.EventType.ACTION,
+			'%s: Não tinha comida para consumir, então perdeu 1 de vida.' % ag.agent_name)
 	current_state = TurnState.VERIFY_DEATH
 
 func verify_death_state():
@@ -358,5 +382,5 @@ func verify_death_state():
 	current_state = TurnState.END_TURN
 
 func end_turn_state():
-	print("FIM")
+	print("Turno finalizado")
 	current_state = TurnState.READY

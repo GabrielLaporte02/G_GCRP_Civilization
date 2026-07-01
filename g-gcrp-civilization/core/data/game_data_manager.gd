@@ -10,8 +10,8 @@ var agent_body: Dictionary[String, AgentSprite] = {}
 var current_turn: int = 0
 
 var event_log: Dictionary[String, Array] = {"Messages": [], "Actions": []}
-var action_remember_amout : int = 40
-var message_remember_amout : int = 40
+var action_remember_amout : int = 80
+var message_remember_amout : int = 80
 
 # --- Funções do sistema  ------------------------------------------------------------------------ #
 func _ready() -> void:
@@ -124,6 +124,8 @@ func get_agent_events_and_results(agent_id: String):
 	var text = ""
 	for i in get_agent_recent_seen_actions_index(agent_id, action_remember_amout):
 		var action = event_log["Actions"][i]
+		if action.agent_id == agent_id:
+			text += "(You) "
 		text += action.text + "\n"
 	return text
 
